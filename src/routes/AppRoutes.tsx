@@ -11,6 +11,7 @@ import { AppDispatch } from "../app/store";
 import Register from "../pages/Register";
 import AccountConfirmation from "../pages/AccountConfirmation";
 import Footer from "../components/ui/Footer";
+import NotFound from "../pages/NotFound";
 
 
 
@@ -32,6 +33,10 @@ const AppRoutes = () => {
                 <Route path="/register" element={<Register />} />
                 <Route path="/confirm-account/*" element={<AccountConfirmation />} />
                 <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+
+                
+                <Route path="*" element={<NotFound />} />
+                
             </Routes>
             <Footer />
         </Router>

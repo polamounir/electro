@@ -61,7 +61,7 @@ export default function Register() {
 
     return (
         <div className="min-h-[100dvh] flex items-center justify-center bg-gray-100 p-4 pb-30">
-            <div className="bg-white shadow-lg rounded-2xl p-6 md:p-10 w-full max-w-sm border border-gray-200">
+            <div className="bg-white shadow-lg rounded-2xl p-6 md:p-10 w-full max-w-md border border-gray-200">
                 <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">Register</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-col gap-4">
@@ -162,14 +162,14 @@ export default function Register() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="cursor-pointer w-full bg-blue-600 text-white font-semibold py-2 rounded-lg transition hover:bg-blue-700 duration-300"
+                            className="cursor-pointer w-full bg-teal-600 text-white font-semibold py-2 rounded-lg transition hover:bg-teal-700 duration-300"
                         >
                             {loading ? "Registering..." : "Register"}
                         </button>
 
                         {/* Redirect to Login */}
                         <div className="text-center text-sm text-gray-600">
-                            Already have an account? <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
+                            Already have an account? <Link to="/login" className="text-teal-700 hover:underline">Login</Link>
                         </div>
                     </div>
                 </form>

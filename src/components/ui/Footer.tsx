@@ -29,14 +29,6 @@ export default function Footer() {
                     <li>
                         <Link className="text-gray-700 transition hover:text-gray-700/75" to="#"> Services </Link>
                     </li>
-
-                    <li>
-                        <Link className="text-gray-700 transition hover:text-gray-700/75" to="#"> Projects </Link>
-                    </li>
-
-                    <li>
-                        <Link className="text-gray-700 transition hover:text-gray-700/75" to="#"> Blog </Link>
-                    </li>
                 </ul>
 
                 <ul className="mt-5 flex justify-center gap-6 md:gap-8">

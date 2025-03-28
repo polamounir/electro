@@ -1,12 +1,13 @@
 import { ChevronRight, Minimize2, Minus, Plus } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import { toggleCartMenu, toggleSearchMenu, toggleSideMenu } from "../../../app/features/slices/navbarSlice";
+import { closeAllMenus, toggleCartMenu, toggleSearchMenu, toggleSideMenu } from "../../../app/features/slices/navbarSlice";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import { ProductTypes } from "../../../types";
 import { addToCart, removeFromCart } from "../../../app/features/slices/cartSlice";
+import { toast } from "sonner";
 
 
 interface SideMenuProps {
@@ -22,14 +23,16 @@ export function CartMenu({ classNames }: SideMenuProps) {
     const { items, totalAmount, totalQuantity } = useSelector((state: RootState) => state.cart)
     const addProductToCart = (product: ProductTypes) => {
         dispatch(addToCart(product));
+        toast.success(`Product Added !`);
     }
 
     const deleteProductToCart = (id: string) => {
         dispatch(removeFromCart(id));
+        toast.success(`Product Removed !`);
     }
 
     return (
-        <div className={`nav-cart-menu ${classNames} w-sm`} role="dialog" aria-labelledby="cart-menu-title" aria-modal="true">
+        <div className={`nav-cart-menu ${classNames} w-xs`} role="dialog" aria-labelledby="cart-menu-title" aria-modal="true">
             <div className="relative p-8 pt-15 h-full">
                 <button
                     className="absolute right-5 top-5"
@@ -109,7 +112,7 @@ export function SearchMenu({ classNames }: SideMenuProps) {
     const dispatch = useDispatch();
     const handleCloseSideMenu = () => dispatch(toggleSearchMenu());
     return (
-        <div className={`nav-search-menu ${classNames} w-sm`} role="dialog" aria-labelledby="search-menu-title" aria-modal="true">
+        <div className={`nav-search-menu ${classNames} w-xs`} role="dialog" aria-labelledby="search-menu-title" aria-modal="true">
             <div className="relative p-8 pt-15">
                 <button
                     className="absolute right-5 top-5"
@@ -159,7 +162,7 @@ export function SideMenu({ classNames }: SideMenuProps) {
         }
     }
     return (
-        <div className={`nav-side-menu ${classNames} w-sm`} role="dialog" aria-label="side-menu-title" aria-modal="true"  >
+        <div className={`nav-side-menu ${classNames} w-xs`} role="dialog" aria-label="side-menu-title" aria-modal="true"  >
             <div className="relative p-8 pt-15">
                 <button
                     className="absolute right-5 top-5"
@@ -173,7 +176,7 @@ export function SideMenu({ classNames }: SideMenuProps) {
                 <div>
                     <ul>
                         <li>
-                            <Link to="#" className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
+                            <Link to="/" onClick={() => dispatch(closeAllMenus())} className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
                                 Home
                             </Link>
                         </li>
@@ -189,12 +192,12 @@ export function SideMenu({ classNames }: SideMenuProps) {
                             <ul className={`ml-6 subcat ${submenu == "category" ? "show" : ""}`}>
                                 <ul className="subcat-box">
                                     <li>
-                                        <Link to="#" className="block px-6 py-3 text-xs text-gray-700 hover:text-gray-900">
+                                        <Link to="#" onClick={() => dispatch(closeAllMenus())} className="block px-6 py-3 text-xs text-gray-700 hover:text-gray-900">
                                             Subcategory 1
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to="#" className="block px-6 py-3 text-xs text-gray-700 hover:text-gray-900">
+                                        <Link to="#" onClick={() => dispatch(closeAllMenus())} className="block px-6 py-3 text-xs text-gray-700 hover:text-gray-900">
                                             Subcategory 2
                                         </Link>
                                     </li>
@@ -202,33 +205,33 @@ export function SideMenu({ classNames }: SideMenuProps) {
                             </ul>
                         </li>
                         <li>
-                            <Link to="#" className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
+                            <Link to="/cart" onClick={() => dispatch(closeAllMenus())} className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
                                 Cart
                             </Link>
                         </li>
                         <li>
-                            <Link to="#" className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
+                            <Link to="#" onClick={() => dispatch(closeAllMenus())} className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
                                 About
                             </Link>
                         </li>
                         <li>
-                            <Link to="#" className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
+                            <Link to="#" onClick={() => dispatch(closeAllMenus())} className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
                                 Services
                             </Link>
                         </li>
                         <li>
-                            <Link to="#" className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
+                            <Link to="/contact-us" onClick={() => dispatch(closeAllMenus())} className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
                                 Contact
                             </Link>
                         </li>
                         <li>
                             <div className="flex items-center">
 
-                                <Link to="/login" className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
+                                <Link to="/login" onClick={() => dispatch(closeAllMenus())} className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
                                     Sign In
                                 </Link>
                                 <span>/</span>
-                                <Link to="/register" className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
+                                <Link to="/register" onClick={() => dispatch(closeAllMenus())} className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
                                     Sign Up
                                 </Link>
                             </div>

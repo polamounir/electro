@@ -42,7 +42,7 @@ export default function MainSlider() {
                     {slides.map((slide) => (
                         <div
                             key={slide.title}
-                            className={`flex justify-center items-center min-h-[400px] lg:h-[90dvh] text-white shadow-lg bg-cover bg-center ${slide.className} `}
+                            className={`flex justify-center items-center min-h-[500px] lg:h-[75dvh] text-white shadow-lg bg-cover bg-center ${slide.className} `}
                         >
                             <div className="main-slider-content relative w-full h-full">
                                 <div className={`main-slider-text ${slide.textPostion} w-[80%] lg:w-[500px] mx-auto  static lg:absolute`}>

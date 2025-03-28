@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { openProductModel } from "../../app/features/slices/productModelSlice";
 import { addToCart, removeFromCart } from "../../app/features/slices/cartSlice";
 import { ProductTypes } from "../../types";
+import { toast } from "sonner";
 
 export default function AllProducts() {
     const dispatch = useDispatch();
@@ -30,10 +31,12 @@ export default function AllProducts() {
 
     const addProductToCart = (product: ProductTypes) => {
         dispatch(addToCart(product));
+        toast.success(`Product Added !`);
     }
 
     const deleteProductToCart = (id: string) => {
         dispatch(removeFromCart(id));
+        toast.success(`Product Removed !`);
     }
 
     return (

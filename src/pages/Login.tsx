@@ -88,19 +88,19 @@ export default function Login() {
                                         }</button>
                                 </div>
                             </div>
-                            <small className="text-right text-sm text-blue-600 hover:underline">
+                            <small className="text-right text-sm text-teal-800 hover:underline">
                                 <Link to="/forgot-password">Forgot password?</Link>
                             </small>
                         </div>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="cursor-pointer w-full bg-blue-600 text-white font-semibold py-2 rounded-lg transition hover:bg-blue-700 duration-300"
+                            className="cursor-pointer w-full bg-teal-600 text-white font-semibold py-2 rounded-lg transition hover:bg-teal-700 duration-300"
                         >
                             {loading ? "Wait ..." : "Login"}
                         </button>
                         <div className="text-center text-sm text-gray-600">
-                            Don't have an account? <Link to="/register" className="text-blue-600 hover:underline">Register</Link>
+                            Don't have an account? <Link to="/register" className="text-teal-600 hover:underline">Register</Link>
                         </div>
                     </div>
                 </form>
