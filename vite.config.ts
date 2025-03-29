@@ -8,5 +8,5 @@ export default defineConfig({
     port: 4200,
   },
   plugins: [react(), tailwindcss()],
-  base: "/",
+  base: "./",
 });

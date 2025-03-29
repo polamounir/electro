@@ -21,7 +21,7 @@ export default function Cart() {
                     {/* items */}
                     <div className="lg:col-span-3 p-10 flex flex-col gap-5 border border-gray-300 rounded-2xl text-xs md:text-sm lg:text-md">
                         {items.map((item, index) => (
-                            <div className="flex flex-col gap-5">
+                            <div className="flex flex-col gap-5" key={item.id}>
                                 <div className="PRODUCT flex gap-5">
                                     <div className="flex bg-red self-center">
                                         <img src={item.images?.[0]} alt="" className="min-w-20 max-w-20 md:min-w-30 md:max-w-30" />
