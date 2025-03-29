@@ -94,20 +94,20 @@ export default function DailyDeals() {
                     {products?.map((product: ProductTypes, index: number) => (
                         <div key={index} className="flex items-center justify-center h-40 pr-5 " aria-hidden={false}>
                             <div className="flex gap-1 h-35 bg-white shadow-md p-3 border border-gray-200 rounded-lg">
-                                <div className="overflow-hidden h-full aspect-square bg-slate-100 flex justify-center items-center">
+                                <div className="overflow-hidden h-full aspect-square bg-slate-50 flex justify-center items-center">
                                     <img
                                         src={product?.images?.[0] ?? productDemo}
                                         alt={product?.title ?? "Product Image"}
-                                        className="h-full aspect-square"
-                                        width={150}
-                                        height={150}
+                                        className=""
+                                        width={80}
+                                        height={100}
                                     />
                                 </div>
                                 <div className="px-2 py-7  w-full  flex flex-col items-start">
                                     <h2 className="text-lg">{product.title}</h2>
                                     <div className="flex items-center gap-3">
-                                        <span>{(product.price).toFixed(2)} $</span>
-                                        <span>{(product.price - (0.05 * product.price)).toFixed(2)} $</span>
+                                        <span className="line-through">{(product.price).toFixed(2)} EGP</span>
+                                        <span className="font-semibold">{(product.price - (0.05 * product.price)).toFixed(2)} EGP</span>
                                     </div>
                                 </div>
                             </div>

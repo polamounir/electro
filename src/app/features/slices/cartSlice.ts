@@ -11,11 +11,19 @@ export interface CartState {
 }
 
 // Initial state
-const initialState: CartState = {
-  items: [],
-  totalQuantity: 0,
-  totalAmount: 0,
+
+const loadCartFromLocalStorage = (): CartState => {
+  try {
+    const cartData = localStorage.getItem("cart");
+    return cartData ? JSON.parse(cartData) : initialState;
+  } catch (error) {
+    console.error("Error loading cart from localStorage:", error);
+    return initialState;
+  }
 };
+
+const initialState: CartState = loadCartFromLocalStorage();
+
 
 const cartSlice = createSlice({
   name: "cart",

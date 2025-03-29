@@ -120,7 +120,7 @@ export default function Register() {
                                 />
                                 <button
                                     type="button"
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 "
                                     onClick={() => setIsPasswordShown(!isPasswordShown)}
                                 >
                                     {isPasswordShown ? <EyeOff /> : <Eye />}
@@ -143,7 +143,7 @@ export default function Register() {
                                 />
                                 <button
                                     type="button"
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 "
                                     onClick={() => setIsConfirmPasswordShown(!isConfirmPasswordShown)}
                                 >
                                     {isConfirmPasswordShown ? <EyeOff /> : <Eye />}
@@ -162,7 +162,7 @@ export default function Register() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="cursor-pointer w-full bg-teal-600 text-white font-semibold py-2 rounded-lg transition hover:bg-teal-700 duration-300"
+                            className=" w-full bg-teal-600 text-white font-semibold py-2 rounded-lg transition hover:bg-teal-700 duration-300"
                         >
                             {loading ? "Registering..." : "Register"}
                         </button>

@@ -32,8 +32,8 @@ export function CartMenu({ classNames }: SideMenuProps) {
     }
 
     return (
-        <div className={`nav-cart-menu ${classNames} w-xs`} role="dialog" aria-labelledby="cart-menu-title" aria-modal="true">
-            <div className="relative p-8 pt-15 h-full">
+        <div className={`nav-cart-menu ${classNames} duration-300 w-xs sm:w-sm lg:w-md`} role="dialog" aria-labelledby="cart-menu-title" aria-modal="true">
+            <div className="relative p-2 pt-15 h-full">
                 <button
                     className="absolute right-5 top-5"
                     onClick={handleCloseSideMenu}
@@ -45,26 +45,30 @@ export function CartMenu({ classNames }: SideMenuProps) {
                 <div className="h-[90dvh] flex flex-col justify-between gap-10 overflow-hidden">
 
                     <div className="flex flex-col gap-5 h-[75%] grow overflow-hidden">
-                        <h2 id="cart-menu-title" className="text-3xl">Cart Menu</h2>
+                        <div className="flex items-end justify-between">
+
+                            <h2 id="cart-menu-title" className="text-3xl font-semibold">Cart Menu</h2>
+                            <Link to="/cart" className="text-teal-600 px-2 hover:underline capitalize" onClick={()=> dispatch(closeAllMenus())}>view all</Link>
+                        </div>
                         <div className="flex flex-col gap-3 overflow-y-auto">
                             {items.map((product) => (
                                 <div key={product.id} className="flex  bg-gray-100 rounded-md shadow">
                                     <div className="flex items-center justify-center bg-white p-3 h-full min-w-25 max-w-25 overflow-hidden aspect-square">
                                         <img src={product.images?.[0]} alt={product.title} width={80} height={80} className="max-w-20" />
                                     </div>
-                                    <div className="flex flex-col justify-between grow p-3 overflow-hidden">
-                                        <div>
+                                    <div className="flex flex-col gap-3 justify-between grow p-3 overflow-hidden">
+                                        <div className="flex flex-col gap-2 text-sm">
 
                                             <div className="overflow-hidden">
                                                 <h2 className="text-nowrap text-ellipsis overflow-hidden">{product.title}</h2>
                                             </div>
-                                            <div>
-                                                <span>Total Price : </span>
-                                                <span>{product.price * product.quantity} $</span>
+                                            <div className="font-semibold">
+                                                <span>Price : </span>
+                                                <span>{product.price * product.quantity} EGP</span>
                                             </div>
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <button className=" text-center bg-red-600 hover:bg-red-500 text-white rounded-md duration-300 p-1" aria-label="remove product from the cart"
+                                            <button className=" text-center bg-red-700 hover:bg-red-600 text-white rounded duration-300 p-0.5" aria-label="remove product from the cart"
                                                 name="removeProduct"
                                                 onClick={() => deleteProductToCart(product.id)}
                                             >
@@ -72,7 +76,7 @@ export function CartMenu({ classNames }: SideMenuProps) {
                                             </button>
                                             <span>{product.quantity}</span>
 
-                                            <button className="text-center bg-green-600 hover:bg-green-500 text-white rounded-md duration-300 p-1" aria-label="add product to the cart" name="addProduct"
+                                            <button className="text-center bg-green-700 hover:bg-green-600 text-white rounded duration-300 p-0.5" aria-label="add product to the cart" name="addProduct"
                                                 onClick={() => addProductToCart(product)}
                                             >
                                                 <Plus strokeWidth={1.25} />
@@ -112,7 +116,7 @@ export function SearchMenu({ classNames }: SideMenuProps) {
     const dispatch = useDispatch();
     const handleCloseSideMenu = () => dispatch(toggleSearchMenu());
     return (
-        <div className={`nav-search-menu ${classNames} w-xs`} role="dialog" aria-labelledby="search-menu-title" aria-modal="true">
+        <div className={`nav-search-menu ${classNames} duration-300 w-xs sm:w-sm lg:w-md`} role="dialog" aria-labelledby="search-menu-title" aria-modal="true">
             <div className="relative p-8 pt-15">
                 <button
                     className="absolute right-5 top-5"
@@ -162,7 +166,7 @@ export function SideMenu({ classNames }: SideMenuProps) {
         }
     }
     return (
-        <div className={`nav-side-menu ${classNames} w-xs`} role="dialog" aria-label="side-menu-title" aria-modal="true"  >
+        <div className={`nav-side-menu ${classNames} duration-300 w-xs sm:w-sm lg:w-md`} role="dialog" aria-label="side-menu-title" aria-modal="true"  >
             <div className="relative p-8 pt-15">
                 <button
                     className="absolute right-5 top-5"
@@ -182,7 +186,7 @@ export function SideMenu({ classNames }: SideMenuProps) {
                         </li>
                         <li>
 
-                            <button name="categoryExtend" className=" cursor-pointer flex items-center justify-between  w-full" onClick={() => { handleSubMenu("category") }}>
+                            <button name="categoryExtend" className="flex items-center justify-between  w-full" onClick={() => { handleSubMenu("category") }}>
 
                                 <span className="block px-4 py-3 text-sm text-gray-700 hover:text-gray-900">
                                     Category

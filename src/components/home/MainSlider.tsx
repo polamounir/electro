@@ -49,7 +49,7 @@ export default function MainSlider() {
                                     <div className="mt-20 lg:mt-0 flex flex-col items-center text-center lg:items-start lg:text-start gap-5 ">
                                         <h2 className="text-3xl lg:text-5xl">{slide.title}</h2>
                                         <p> {slide.desc}</p>
-                                        <button className="cursor-pointer" aria-label="view more button"><Link to="" className="px-10 py-3 font-semibold rounded duration-500">View Details</Link></button>
+                                        <button className="" aria-label="view more button"><Link to="" className="px-10 py-3 font-semibold rounded duration-500">View Details</Link></button>
                                     </div>
                                 </div>
                             </div>

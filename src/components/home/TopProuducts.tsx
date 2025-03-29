@@ -22,8 +22,8 @@ export default function TopProducts() {
     const { data: products, isLoading, isError, } = useQuery({
         queryKey: ["products", viewedProducts],
         queryFn: () => new Promise((resolve) =>
-            setTimeout(() => resolve(fetchTopProducts( end)), 1000)
-           
+            setTimeout(() => resolve(fetchTopProducts(end)), 1000)
+
         ),
 
     })
@@ -136,20 +136,19 @@ export default function TopProducts() {
                                                 />
                                                 <div className="top-products-img-overlay">
                                                     <div className="top-products-img-overlay-actions flex justify-around items-center gap-3">
-                                                        <button className="flex justify-center items-center h-10 w-10 rounded-full bg-white text-black cursor-pointer hover:bg-black hover:text-white duration-500">
+                                                        <button className="flex justify-center items-center h-10 w-10 rounded-full bg-white text-black hover:bg-black hover:text-white duration-500">
                                                             <ShoppingCart />
                                                         </button>
-                                                        <button className="flex justify-center items-center h-10 w-10 rounded-full bg-white text-black cursor-pointer hover:bg-black hover:text-white duration-500"><Eye /></button>
-                                                        <button className="flex justify-center items-center h-10 w-10 rounded-full bg-white text-black cursor-pointer hover:bg-black hover:text-white duration-500"><Heart /></button>
+                                                        <button className="flex justify-center items-center h-10 w-10 rounded-full bg-white text-black hover:bg-black hover:text-white duration-500"><Eye /></button>
+                                                        <button className="flex justify-center items-center h-10 w-10 rounded-full bg-white text-black hover:bg-black hover:text-white duration-500"><Heart /></button>
 
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="px-2 w-full flex flex-col items-center text-center min-h-20">
                                                 <h2 className="text-sm text-nowrap text-ellipsis max-w-[90%] overflow-hidden mx-auto">{product.title}</h2>
-                                                <div className="flex items-center gap-3">
-                                                    <span className="text-xs text-nowrap md:text-[16px] line-through">{(product.price).toFixed(2)} $</span>
-                                                    <span className="text-xs text-nowrap md:text-[16px]">{(product.price - (0.05 * product.price)).toFixed(2)} $</span>
+                                                <div className="flex items-center gap-3 ">
+                                                    <span className="text-xs text-nowrap md:text-[16px] font-semibold">{(product.price - (0.05 * product.price)).toFixed(2)} EGP</span>
                                                 </div>
                                             </div>
                                         </div>

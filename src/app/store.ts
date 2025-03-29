@@ -3,6 +3,7 @@ import navbarReducer from "./features/slices/navbarSlice";
 import productModelReducer from "./features/slices/productModelSlice";
 import authReducer from "./features/slices/authSlice";
 import cartReducer from "./features/slices/cartSlice";
+import cartMiddleware from "./features/middlewares/cartMiddleware";
 
 export const makeStore = () => {
   return configureStore({
@@ -10,10 +11,11 @@ export const makeStore = () => {
       navbar: navbarReducer,
       productModel: productModelReducer,
       auth: authReducer,
-      cart: cartReducer,
+      cart: cartReducer
+    
     },
-    // middleware: (getDefaultMiddleware) =>
-    //   getDefaultMiddleware().concat(),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(cartMiddleware),
   });
 };
 

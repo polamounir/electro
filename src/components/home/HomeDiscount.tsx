@@ -49,8 +49,8 @@ export default function HomeDiscount() {
                         Array.isArray(products) && products.map((product, i) => (
 
                             <div className="product p-2 py-5 rounded-md border-2 border-solid border-[#eee] overflow-hidden relative" key={i}>
-                                <div className="upper flex justify-between absolute top-2 left-2 rounded-full overflow-hidden">
-                                    <span className="bg-red-500 pr-3 pl-3 text-white font-medium">-1%</span>
+                                <div className="upper shadow-2xl flex justify-between absolute top-3 -left-7 -rotate-45 z-10">
+                                    <span className="bg-red-500 text-white font-medium px-10">-1%</span>
                                     <i className="far fa-heart"></i>
                                 </div>
                                 <div className="h-25 md:h-50 overflow-hidden">
@@ -66,13 +66,13 @@ export default function HomeDiscount() {
                                 {/* <div className="my-3 p-3 px-5  border-t border-b border-gray-200 ">
                                     <div className="flex justify-between">
 
-                                        <button className="cursor-pointer">
+                                        <button className="">
                                             <ShoppingCart />
                                         </button>
-                                        <button className="cursor-pointer" onClick={() => previewProduct(product.id)}>
+                                        <button className="" onClick={() => previewProduct(product.id)}>
                                             <Eye />
                                         </button>
-                                        <button className="cursor-pointer">
+                                        <button className="">
                                             {product.isWishlisted ? (
                                                 <Heart color="#ff0000" fill="#ff0000" />
                                             ) : (
@@ -83,11 +83,11 @@ export default function HomeDiscount() {
                                 </div> */}
 
                                 <div className="text-center text-xs md:text-sm">
-                                   
+
                                     <p className="font-bold">{product.title}</p>
                                     <div className="price flex justify-center gap-5">
-                                        <p className="old line-through text-gray-400">{product.price}</p>
-                                        <p className="new text-red-500 font-bold">{product.price}</p>
+                                        <p className="old line-through text-gray-400">{product.price} EGP</p>
+                                        <p className="new text-red-500 font-bold">{product.price} EGP</p>
                                     </div>
                                 </div>
                             </div>
@@ -100,7 +100,7 @@ export default function HomeDiscount() {
                     }
                 </div>
                 <div className="flex justify-center">
-                    <Link to="/" className="cursor-pointer">
+                    <Link to="/" className="">
                         <button className=" bg-black text-white px-10 py-3 rounded-md font-semibold">View More</button>
                     </Link>
                 </div>

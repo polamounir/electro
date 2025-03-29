@@ -12,6 +12,8 @@ import Register from "../pages/Register";
 import AccountConfirmation from "../pages/AccountConfirmation";
 import Footer from "../components/ui/Footer";
 import NotFound from "../pages/NotFound";
+import MyAccount from "../pages/MyAccount";
+import Cart from "../pages/Cart";
 
 
 
@@ -31,12 +33,14 @@ const AppRoutes = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/cart" element={<Cart />} />
                 <Route path="/confirm-account/*" element={<AccountConfirmation />} />
                 <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+                <Route path="/profile" element={<MyAccount />}  />
 
                 
                 <Route path="*" element={<NotFound />} />
-                
+
             </Routes>
             <Footer />
         </Router>

@@ -68,13 +68,13 @@ export default function AllProducts() {
                             <div className="my-3 p-3 px-5  border-t border-b border-gray-200 ">
                                 <div className="flex justify-between">
 
-                                    <button className="cursor-pointer" onClick={() => addProductToCart(product)}>
+                                    <button className="" onClick={() => addProductToCart(product)}>
                                         <ShoppingCart />
                                     </button>
-                                    <button className="cursor-pointer" onClick={() => previewProduct(product.id)}>
+                                    <button className="" onClick={() => previewProduct(product.id)}>
                                         <Eye />
                                     </button>
-                                    <button className="cursor-pointer" onClick={() => deleteProductToCart(product.id)}>
+                                    <button className="" onClick={() => deleteProductToCart(product.id)}>
                                         {product.isWishlisted ? (
                                             <Heart color="#ff0000" fill="#ff0000" />
                                         ) : (
@@ -105,7 +105,7 @@ export default function AllProducts() {
                 {/* Load More Button */}
                 <div className="flex justify-center">
                     <button
-                        className="cursor-pointer bg-black text-white px-10 py-3 rounded-md font-semibold disabled:opacity-50"
+                        className="bg-black text-white px-10 py-3 rounded-md font-semibold disabled:opacity-50"
                     // onClick={handleLoadMore}
                     // disabled={loadingMore}
                     >

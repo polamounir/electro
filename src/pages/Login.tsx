@@ -78,7 +78,7 @@ export default function Login() {
                                         className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                         onChange={handleChange}
                                     />
-                                    <button className="absolute right-3  top-1/2 -translate-y-1/2 cursor-pointer" onClick={(e) => {
+                                    <button className="absolute right-3  top-1/2 -translate-y-1/2" onClick={(e) => {
                                         e.preventDefault();
                                         setIsPasswordShown(!isPasswordShown)
                                     }
@@ -95,7 +95,7 @@ export default function Login() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="cursor-pointer w-full bg-teal-600 text-white font-semibold py-2 rounded-lg transition hover:bg-teal-700 duration-300"
+                            className="w-full bg-teal-600 text-white font-semibold py-2 rounded-lg transition hover:bg-teal-700 duration-300"
                         >
                             {loading ? "Wait ..." : "Login"}
                         </button>

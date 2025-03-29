@@ -65,8 +65,24 @@ nav {
 .subcat-box {
   overflow: hidden;
 
-  overflow: hidden;
 }
 
 .subcat-box {
+}
+
+
+
+/* ---------------------- */
+.nav-categories-box {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s ease;
+  width: max-content;
+}
+.nav-categories-link:hover .nav-categories-box{
+   grid-template-rows: 1fr;
+}
+
+.nav-categories-content {
+  overflow: hidden;
 }
