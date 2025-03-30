@@ -72,7 +72,7 @@ export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
 export const fetchUser = createAsyncThunk<User, void, { rejectValue: null }>(
   "auth/fetchUser",
   async (_, { rejectWithValue }) => {
-    console.log("INIT");
+    // console.log("INIT");
     try {
       const response = await api.get("/auth/me");
       return response.data;

@@ -1,124 +1,168 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ProductTypes } from "../../../types";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { getCart, addToCart } from "../../../api/products";
+import { RootState } from "../../store";
 
-// Define the type for a cart item
-export interface CartItem extends ProductTypes {
+// Define types for cart items and cart
+interface CartItem {
+  category: string;
+  id: string;
+  imageUrl: string;
+  price: number;
   quantity: number;
+  title: string;
 }
 
-// Define the cart state type
-export interface CartState {
-  items: CartItem[];
-  totalQuantity: number;
-  totalAmount: number;
+interface CartType {
+  cartItems: CartItem[];
+  clientSecret: string;
+  deliveryMethodId: string;
+  id: string;
+  paymentIntnetId: string;
+  shippingPrice: number;
+  subTotal: number;
 }
 
-// Initial state
+interface CartState {
+  cart: CartType;
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error: string | null;
+}
+
 const initialState: CartState = {
-  items: [],
-  totalQuantity: 0,
-  totalAmount: 0,
+  cart: {
+    cartItems: [],
+    clientSecret: "",
+    deliveryMethodId: "",
+    id: "",
+    paymentIntnetId: "",
+    shippingPrice: 0,
+    subTotal: 0,
+  },
+  status: "idle",
+  error: null,
 };
 
-const loadCartFromLocalStorage = (): CartState => {
-  try {
-    const cartData = localStorage.getItem("cart");
-    return cartData ? JSON.parse(cartData) : initialState;
-  } catch (error) {
-    console.error("Error loading cart from localStorage:", error);
-    return initialState;
+// ---------------------------
+const getCartInitID = (): string => {
+  let cartInitID = localStorage.getItem("cartInitID");
+  if (!cartInitID) {
+    cartInitID = crypto.randomUUID();
+    localStorage.setItem("cartInitID", cartInitID);
   }
+  return cartInitID;
 };
+// -------------------------
+export const fetchCartAsync = createAsyncThunk<
+  CartType,
+  void,
+  { rejectValue: string }
+>("cart/fetchCart", async (_, { rejectWithValue, getState, dispatch }) => {
+  dispatch(initAppCart());
+  const state = getState() as RootState;
+  try {
+    const response = await getCart(state.cart.cart.id);
+    return response;
+  } catch (error) {
+    return rejectWithValue(
+      error instanceof Error ? error.message : "An unknown error occurred"
+    );
+  }
+});
 
-// Save cart to localStorage middleware
-const saveCartToLocalStorage = (state: CartState) => {
-  try {
-    localStorage.setItem("cart", JSON.stringify(state));
-  } catch (error) {
-    console.error("Error saving cart to localStorage:", error);
+export const addToCartAsync = createAsyncThunk<
+  string,
+  string,
+  { rejectValue: string }
+>(
+  "cart/addToCart",
+  async (productId, { rejectWithValue, dispatch, getState }) => {
+    dispatch(initAppCart());
+    const state = getState() as RootState;
+    const cartId = state.cart.cart.id ;
+    try {
+      await addToCart(productId, cartId);
+      dispatch(fetchCartAsync());
+      return productId;
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : "An unknown error occurred"
+      );
+    }
   }
-};
+);
+
+// export const removeFromCartAsync = createAsyncThunk<
+//   string,
+//   string,
+//   { rejectValue: string }
+// >(
+//   "cart/removeFromCart",
+//   async (productId, { rejectWithValue, dispatch }) => {
+//     try {
+//       await removeFromCart(productId);
+//       // Refresh cart after removing item
+//       dispatch(fetchCartAsync());
+//       return productId;
+//     } catch (error) {
+//       return rejectWithValue(error instanceof Error ? error.message : "An unknown error occurred");
+//     }
+//   }
+// );
 
 const cartSlice = createSlice({
   name: "cart",
-  initialState: loadCartFromLocalStorage(),
+  initialState,
   reducers: {
-    // Add item to cart
-    addToCart: (state, action: PayloadAction<ProductTypes>) => {
-      const newItem = action.payload;
-      const existingItem = state.items.find((item) => item.id === newItem.id);
+    initAppCart: (state) => {
+      state.cart.id = getCartInitID();
 
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        state.items.push({ ...newItem, quantity: 1 });
-      }
-
-      state.totalQuantity += 1;
-      state.totalAmount += newItem.price;
-
-      saveCartToLocalStorage(state);
     },
-
-    // Remove item from cart
-    removeFromCart: (state, action: PayloadAction<string>) => {
-      const itemId = action.payload;
-      const existingItem = state.items.find((item) => item.id === itemId);
-
-      if (existingItem) {
-        if (existingItem.quantity > 1) {
-          existingItem.quantity -= 1;
-          state.totalQuantity -= 1;
-          state.totalAmount -= existingItem.price;
-        } else {
-          state.items = state.items.filter((item) => item.id !== itemId);
-          state.totalQuantity -= 1;
-          state.totalAmount -= existingItem.price; // Fixed: Missing total amount reduction
+  },
+  extraReducers: (builder) => {
+    builder
+      // fetchCart cases
+      .addCase(fetchCartAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(
+        fetchCartAsync.fulfilled,
+        (state, action: PayloadAction<CartType>) => {
+          state.status = "succeeded";
+          state.cart = action.payload;
+          state.error = null;
         }
-
-        saveCartToLocalStorage(state);
-      }
-    },
-
-    // Adjust item quantity
-    adjustQuantity: (
-      state,
-      action: PayloadAction<{ id: string; quantity: number }>
-    ) => {
-      const { id, quantity } = action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
-
-      if (existingItem) {
-        // Recalculate total quantity and amount
-        state.totalQuantity =
-          state.totalQuantity - existingItem.quantity + quantity;
-        state.totalAmount =
-          state.totalAmount -
-          existingItem.price * existingItem.quantity +
-          existingItem.price * quantity;
-
-        // Update item quantity
-        existingItem.quantity = quantity;
-
-        // Remove item if quantity is 0
-        if (quantity <= 0) {
-          state.items = state.items.filter((item) => item.id !== id);
-        }
-
-        saveCartToLocalStorage(state);
-      }
-    },
-
-    // Clear entire cart
-    clearCart: (state) => {
-      Object.assign(state, initialState);
-      localStorage.removeItem("cart");
-    },
+      )
+      .addCase(fetchCartAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload as string;
+      })
+      // Add other async operations status handling
+      .addCase(addToCartAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(addToCartAsync.fulfilled, (state) => {
+        state.status = "succeeded";
+        state.error = null;
+      })
+      .addCase(addToCartAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload as string;
+      });
+ 
+    // .addCase(removeFromCartAsync.pending, (state) => {
+    //   state.status = "loading";
+    // })
+    // .addCase(removeFromCartAsync.fulfilled, (state) => {
+    //   state.status = "succeeded";
+    //   state.error = null;
+    // })
+    // .addCase(removeFromCartAsync.rejected, (state, action) => {
+    //   state.status = "failed";
+    //   state.error = action.payload as string;
+    // });
   },
 });
 
-// Export actions and reducer
-export const { addToCart, removeFromCart, adjustQuantity, clearCart } =
-  cartSlice.actions;
+export const { initAppCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -27,13 +27,14 @@ nav {
   transition: all 0.5s;
   background: #f8f8f8;
   transition: all 0.5s;
-  border-right: 1px solid black;
+  box-shadow: 5px 0px 5px #0061347c;
 }
 .nav-side-menu.show {
 }
 .nav-side-menu.hide,
 .nav-cart-menu.hide {
   transform: translate(-100%, 0);
+  box-shadow: none;
 }
 /* ------------------------------ */
 .nav-search-menu {
@@ -64,13 +65,10 @@ nav {
 }
 .subcat-box {
   overflow: hidden;
-
 }
 
 .subcat-box {
 }
-
-
 
 /* ---------------------- */
 .nav-categories-box {
@@ -79,8 +77,8 @@ nav {
   transition: grid-template-rows 0.5s ease;
   width: max-content;
 }
-.nav-categories-link:hover .nav-categories-box{
-   grid-template-rows: 1fr;
+.nav-categories-link:hover .nav-categories-box {
+  grid-template-rows: 1fr;
 }
 
 .nav-categories-content {

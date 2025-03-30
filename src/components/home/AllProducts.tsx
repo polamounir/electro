@@ -10,12 +10,13 @@ import ProductCardSkeleton from "../ui/ProductCardSkeleton";
 import { fetchHomeProducts } from "../../api/products";
 import { useQuery } from "@tanstack/react-query";
 import { openProductModel } from "../../app/features/slices/productModelSlice";
-import { addToCart, removeFromCart } from "../../app/features/slices/cartSlice";
-import { ProductTypes } from "../../types";
+// import { addToCart, removeFromCart } from "../../app/features/slices/cartSlice";
 import { toast } from "sonner";
+import { addToCartAsync } from "../../app/features/slices/cartSlice";
+import { AppDispatch } from "../../app/store";
 
 export default function AllProducts() {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>()
 
 
 
@@ -29,15 +30,15 @@ export default function AllProducts() {
     });
 
 
-    const addProductToCart = (product: ProductTypes) => {
-        dispatch(addToCart(product));
-        toast.success(`Product Added !`);
+    const handleAddProduct = (id: string) => {
+        dispatch(addToCartAsync(id))
+        toast.success(`Product Added to Cart!`);
     }
 
-    const deleteProductToCart = (id: string) => {
-        dispatch(removeFromCart(id));
-        toast.success(`Product Removed !`);
-    }
+    // const deleteProductToCart = (id: string) => {
+    //     // dispatch(removeFromCart(id));
+    //     toast.success(`Product Removed !`);
+    // }
 
     return (
         <div className="products py-10">
@@ -68,13 +69,13 @@ export default function AllProducts() {
                             <div className="my-3 p-3 px-5  border-t border-b border-gray-200 ">
                                 <div className="flex justify-between">
 
-                                    <button className="" onClick={() => addProductToCart(product)}>
+                                    <button className="" onClick={() => handleAddProduct(product.id)}>
                                         <ShoppingCart />
                                     </button>
                                     <button className="" onClick={() => previewProduct(product.id)}>
                                         <Eye />
                                     </button>
-                                    <button className="" onClick={() => deleteProductToCart(product.id)}>
+                                    <button className="">
                                         {product.isWishlisted ? (
                                             <Heart color="#ff0000" fill="#ff0000" />
                                         ) : (

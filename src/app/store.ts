@@ -5,14 +5,15 @@ import authReducer from "./features/slices/authSlice";
 import cartReducer from "./features/slices/cartSlice";
 import cartMiddleware from "./features/middlewares/cartMiddleware";
 
+
 export const makeStore = () => {
   return configureStore({
     reducer: {
+     
       navbar: navbarReducer,
       productModel: productModelReducer,
       auth: authReducer,
-      cart: cartReducer
-    
+      cart: cartReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(cartMiddleware),

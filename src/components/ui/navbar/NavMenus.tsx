@@ -1,13 +1,13 @@
-import { ChevronRight, Minimize2, Minus, Plus } from "lucide-react";
+import { ChevronRight, Minimize2 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { closeAllMenus, toggleCartMenu, toggleSearchMenu, toggleSideMenu } from "../../../app/features/slices/navbarSlice";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../app/store";
-import { ProductTypes } from "../../../types";
-import { addToCart, removeFromCart } from "../../../app/features/slices/cartSlice";
-import { toast } from "sonner";
+// import { useSelector } from "react-redux";
+// import { RootState } from "../../../app/store";
+// import { ProductTypes } from "../../../types";
+// // import { addToCart, removeFromCart } from "../../../app/features/slices/cartSlice";
+// import { toast } from "sonner";
 
 
 interface SideMenuProps {
@@ -20,16 +20,16 @@ export function CartMenu({ classNames }: SideMenuProps) {
     const handleCloseSideMenu = () => dispatch(toggleCartMenu());
 
 
-    const { items, totalAmount, totalQuantity } = useSelector((state: RootState) => state.cart)
-    const addProductToCart = (product: ProductTypes) => {
-        dispatch(addToCart(product));
-        toast.success(`Product Added !`);
-    }
+    // const { items, totalAmount, totalQuantity } = useSelector((state: RootState) => state.cart)
+    // const addProductToCart = (product: ProductTypes) => {
+    //     // dispatch(addToCart(product));
+    //     toast.success(`Product Added !`);
+    // }
 
-    const deleteProductToCart = (id: string) => {
-        dispatch(removeFromCart(id));
-        toast.success(`Product Removed !`);
-    }
+    // const deleteProductToCart = (id: string) => {
+    //     // dispatch(removeFromCart(id));
+    //     toast.success(`Product Removed !`);
+    // }
 
     return (
         <div className={`nav-cart-menu ${classNames} duration-300 w-xs sm:w-sm lg:w-md`} role="dialog" aria-labelledby="cart-menu-title" aria-modal="true">
@@ -50,7 +50,7 @@ export function CartMenu({ classNames }: SideMenuProps) {
                             <h2 id="cart-menu-title" className="text-3xl font-semibold">Cart Menu</h2>
                             <Link to="/cart" className="text-teal-600 px-2 hover:underline capitalize" onClick={()=> dispatch(closeAllMenus())}>view all</Link>
                         </div>
-                        <div className="flex flex-col gap-3 overflow-y-auto">
+                        {/* <div className="flex flex-col gap-3 overflow-y-auto">
                             {items.map((product) => (
                                 <div key={product.id} className="flex  bg-gray-100 rounded-md shadow">
                                     <div className="flex items-center justify-center bg-white p-3 h-full min-w-25 max-w-25 overflow-hidden aspect-square">
@@ -85,19 +85,19 @@ export function CartMenu({ classNames }: SideMenuProps) {
                                     </div>
                                 </div>
                             ))}
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* --------------------- */}
                     <div className="flex flex-col gap-2 items-center border-t pt-5">
                         <div className="flex justify-between items-center w-full">
                             <h2>Total</h2>
-                            <h2>{totalAmount.toFixed(2)} $</h2>
+                            {/* <h2>{totalAmount.toFixed(2)} $</h2> */}
 
                         </div>
                         <div className="flex justify-between items-center w-full">
                             <h2>Quantity</h2>
-                            <h2>{totalQuantity} items</h2>
+                            {/* <h2>{totalQuantity} items</h2> */}
 
                         </div>
                         <button className="w-full text-center py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl duration-300">
