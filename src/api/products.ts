@@ -1,5 +1,6 @@
+import { AxiosError } from "axios";
 import { api } from "./axiosInstance";
-import Cookies from "js-cookie";
+
 export const fetchDailyDeals = async () => {
   try {
     const { data } = await api.get(`/products?page=1&limit=8`);
@@ -119,24 +120,57 @@ interface OrderDetailTypes {
 }
 export const createOrder = async (data: OrderDetailTypes) => {
   try {
-    const res = await fetch(
-      "https://ecommerce.zerobytetools.com/api/orders/create-order",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("accessToken")}`,
-        },
-        body: JSON.stringify(data),
-      }
-    );
-    if (!res.ok) {
-      throw new Error("Error creating order");
-    }
-    const order = await res.json();
-    console.log(order);
-    return order;
+    const res = await api.post(`/orders/create-order`, data);
+    return res.data;
   } catch (error) {
-    return error;
+    if (error instanceof AxiosError) {
+      console.error(
+        "Order creation failed:",
+        error.response?.data || error.message
+      );
+      throw new Error(
+        error.response?.data?.message || "Failed to create order"
+      );
+    }
+    console.error("Unexpected error:", error);
+    throw new Error("An unexpected error occurred");
   }
 };
+
+// export const createOrder = async (data: OrderDetailTypes) => {
+//   //   const token = Cookies.get("accessToken");
+//   // if (!token) {
+//   //   throw new Error("User not logged in");
+//   // }
+//   // try {
+//   //   const res = await fetch(
+//   //     "https://ecommerce.zerobytetools.com/api/orders/create-order",
+//   //     {
+//   //       method: "POST",
+//   //       headers: {
+//   //         "Content-Type": "application/json",
+//   //         Authorization: `Bearer ${Cookies.get("accessToken")}`,
+//   //       },
+//   //       body: JSON.stringify(data),
+//   //     }
+//   //   );
+//   //   if (!res.ok) {
+//   //     throw new Error("Error creating order");
+//   //   }
+//   //   const order = await res.json();
+//   //   console.log(order);
+//   //   return order;
+//   // } catch (error) {
+//   //   console.error(error);
+//   //   return "Error creating order";
+//   // }
+
+//   try {
+//     const res = await api.post(`/orders/create-order`, data);
+
+//     return res;
+//   } catch (error) {
+//     console.error("There has been a problem with your fetch operation:", error);
+//     return null;
+//   }
+// };

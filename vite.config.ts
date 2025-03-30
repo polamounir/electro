@@ -6,6 +6,13 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   server: {
     port: 4200,
+    proxy: {
+      "/api": {
+        target: "https://ecommerce.zerobytetools.com",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   plugins: [react(), tailwindcss()],
   base: "./",
