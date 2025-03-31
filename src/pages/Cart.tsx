@@ -56,10 +56,10 @@ export default function Cart() {
                                 <h2 className="">{cart?.subTotal} EGP</h2>
                             </div>
                         </div>
-                        <div className="flex justify-between gap-3">
+                        {/* <div className="flex justify-between gap-3">
                             <input type="text" className="flex-1 px-5 py-2 rounded-full border border-gray-300 outline-none max-w-[70%] sm:max-w-[100%] text-sm focus:border-teal-500 duration-300" placeholder="🎟️ 🎫 Enter Promo code" />
                             <button className="block bg-black text-white px-5 py-2 rounded-full">Apply</button>
-                        </div>
+                        </div> */}
                         <Link to="/checkout" className="text-center font-semibold px-5 py-2 text-white bg-teal-500 hover:bg-teal-600 rounded-full duration-300 ">Checkout</Link>
                     </div>
                 </div>

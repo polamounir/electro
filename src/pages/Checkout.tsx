@@ -66,7 +66,7 @@ export default function Checkout() {
     const [orderDetail, setOrderDetail] = useState<OrderDetailTypes>(
         {
             cartId: "",
-            couponCode: "ABC123",
+            couponCode: "",
             shippingAddress: {
                 firstName: "",
                 lastName: "",
@@ -75,14 +75,13 @@ export default function Checkout() {
                 state: "",
                 zipCode: "",
             },
-            paymentMethod: "",
+            paymentMethod: "Online",
             deliveryMethod: "9d9e0d7e-a9a8-4d2a-c907-08dd6f6fbed6",
         }
     )
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => { dispatch(fetchCartAsync()) }, [dispatch])
-    
     const { cartItems, subTotal, shippingPrice, id } = useSelector((state: RootState) => state.cart.cart)
 
 
@@ -244,7 +243,7 @@ export default function Checkout() {
                             <hr className="border-gray-300" />
                             <div className="text-md p-5 flex flex-col gap-3">
                                 {
-                                    cartItems.map(item => (
+                                    cartItems?.map(item => (
                                         <div key={item.id} className="flex items-center gap-5 ">
                                             <div className="flex justify-center bg-red self-center min-w-15 max-w-15 md:min-w-20 md:max-w-20 h-20">
                                                 <img src={item.imageUrl} alt="" className=" object-contain" />
@@ -267,7 +266,7 @@ export default function Checkout() {
                             <hr className="border-gray-300" />
                             <div className="text-md p-5 text-black flex flex-col gap-3">
 
-                                {paymentMethods.map((option) => (
+                                {paymentMethods?.map((option) => (
                                     <label
                                         key={option.id}
                                         className=" p-3 flex justify- w-full items-center rounded-lg border border-transparent cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold"
@@ -297,7 +296,7 @@ export default function Checkout() {
                             </div>
                             <hr className="border-gray-300" />
                             <div className="text-md p-5 text-black flex flex-col gap-3">
-                                {deliveryMethods.map((option: DeliveryMethodTypes) => (
+                                {deliveryMethods?.map((option: DeliveryMethodTypes) => (
                                     <label
                                         key={option.id}
                                         className=" p-3 flex justify- w-full items-center rounded-lg border border-transparent cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold"
