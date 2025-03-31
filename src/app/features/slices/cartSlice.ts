@@ -47,7 +47,7 @@ const initialState: CartState = {
 const getCartInitID = (): string => {
   let cartInitID = localStorage.getItem("cartInitID");
   if (!cartInitID) {
-    cartInitID = uuidv4(); 
+    cartInitID = uuidv4();
     localStorage.setItem("cartInitID", cartInitID);
   }
   return cartInitID;
@@ -124,14 +124,10 @@ const cartSlice = createSlice({
       .addCase(fetchCartAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(
-        fetchCartAsync.fulfilled,
-        (state, action: PayloadAction<CartType>) => {
-          state.status = "succeeded";
-          state.cart = action.payload;
-          state.error = null;
-        }
-      )
+      .addCase(fetchCartAsync.fulfilled, (state) => {
+        state.status = "succeeded";
+        state.error = null;
+      })
       .addCase(fetchCartAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload as string;

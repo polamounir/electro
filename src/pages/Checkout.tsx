@@ -82,6 +82,7 @@ export default function Checkout() {
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => { dispatch(fetchCartAsync()) }, [dispatch])
+    
     const { cartItems, subTotal, shippingPrice, id } = useSelector((state: RootState) => state.cart.cart)
 
 
