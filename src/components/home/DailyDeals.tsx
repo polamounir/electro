@@ -9,6 +9,11 @@ import productDemo from "../../assets/images/product_placeholder.webp"
 import { ProductTypes } from "../../types";
 import { useQuery } from "@tanstack/react-query";
 import { fetchDailyDeals } from "../../api/products";
+import { ShoppingCart } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../app/store";
+import { addToCartAsync } from "../../app/features/slices/cartSlice";
+import { toast } from "sonner";
 
 export default function DailyDeals() {
     const settings = {
@@ -79,6 +84,12 @@ export default function DailyDeals() {
         });
     }, []);
 
+    const dispatch = useDispatch<AppDispatch>()
+
+    const addProductToCart = (id: string) => {
+        dispatch(addToCartAsync(id))
+        toast.success("Product added successfully")
+    }
     if (isError) return <h2 className="text-center p-4"> something went wrong</h2>;
     return (
         <div className="daily-deals bg-white rounded-lg shadow-lg py-5 px-2 lg:px-20">
@@ -93,17 +104,22 @@ export default function DailyDeals() {
                 <Slider {...settings} className="px-1 ">
                     {products?.map((product: ProductTypes, index: number) => (
                         <div key={index} className="flex items-center justify-center h-40 pr-5 " aria-hidden={false}>
-                            <div className="flex gap-1 h-35 bg-white shadow-md p-3 border border-gray-200 rounded-lg">
-                                <div className="overflow-hidden h-full aspect-square bg-slate-50 flex justify-center items-center">
+                            <div className="flex gap-1 h-35 bg-white shadow-md p-3 border border-gray-200 rounded-lg daily-deal-card cursor-auto">
+                                <div className="daily-deal-card-overlay ">
+                                    <button className="duration-500" onClick={() => addProductToCart(product.id)}><ShoppingCart size={35} strokeWidth={2.5} /></button>
+                                </div>
+                                <div className="overflow-hidden h-full 
+                                w-40
+                                bg-slate-50 flex justify-center items-center">
                                     <img
                                         src={product?.images?.[0] ?? productDemo}
                                         alt={product?.title ?? "Product Image"}
                                         className=""
                                         width={80}
-                                        height={100}
+                                        height={80}
                                     />
                                 </div>
-                                <div className="px-2 py-7  w-full  flex flex-col items-start">
+                                <div className="px-2  w-full  flex flex-col items-start justify-between py-5">
                                     <h2 className="text-lg">{product.title}</h2>
                                     <div className="flex items-center gap-3">
                                         <span className="line-through">{(product.price).toFixed(2)} EGP</span>

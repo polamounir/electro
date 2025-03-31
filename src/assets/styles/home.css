@@ -141,3 +141,30 @@
   transform: translate(-50%, -50%);
   transition: all 0.5s 0.3s;
 }
+
+/* ----------------------------- */
+.daily-deal-card {
+  position: relative;
+  overflow: hidden;
+}
+.daily-deal-card-overlay {
+  position: absolute;
+  top: 0;
+  left: -8rem;
+  width: 8rem;
+  height: 100%;
+  background-color: #3e5f5d73 ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s;
+  color: #fff;
+  font-weight: 900;
+}
+.daily-deal-card:hover .daily-deal-card-overlay {
+  left: 0;
+}
+.daily-deal-card-overlay button:hover {
+  transition: all 0.5s;
+  color: rgb(125, 214, 214);
+}

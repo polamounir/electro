@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { getCart, addToCart } from "../../../api/products";
 import { RootState } from "../../store";
+import { v4 as uuidv4 } from "uuid";
 
 // Define types for cart items and cart
 interface CartItem {
@@ -46,7 +47,7 @@ const initialState: CartState = {
 const getCartInitID = (): string => {
   let cartInitID = localStorage.getItem("cartInitID");
   if (!cartInitID) {
-    cartInitID = crypto.randomUUID();
+    cartInitID = uuidv4(); 
     localStorage.setItem("cartInitID", cartInitID);
   }
   return cartInitID;
@@ -78,7 +79,7 @@ export const addToCartAsync = createAsyncThunk<
   async (productId, { rejectWithValue, dispatch, getState }) => {
     dispatch(initAppCart());
     const state = getState() as RootState;
-    const cartId = state.cart.cart.id ;
+    const cartId = state.cart.cart.id;
     try {
       await addToCart(productId, cartId);
       dispatch(fetchCartAsync());
@@ -115,7 +116,6 @@ const cartSlice = createSlice({
   reducers: {
     initAppCart: (state) => {
       state.cart.id = getCartInitID();
-
     },
   },
   extraReducers: (builder) => {
@@ -148,7 +148,7 @@ const cartSlice = createSlice({
         state.status = "failed";
         state.error = action.payload as string;
       });
- 
+
     // .addCase(removeFromCartAsync.pending, (state) => {
     //   state.status = "loading";
     // })

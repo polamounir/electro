@@ -17,7 +17,7 @@ import { fetchTopProducts } from "../../api/products"
 
 export default function TopProducts() {
     const [viewedProducts, setViewedProducts] = useState<string>("featured")
-    const [end, setEnd] = useState<number>(5)
+    const [end, setEnd] = useState<number>(6)
 
     const { data: products, isLoading, isError, } = useQuery({
         queryKey: ["products", viewedProducts],
@@ -32,8 +32,8 @@ export default function TopProducts() {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 5,
+        slidesToShow: 6,
+        slidesToScroll: 6,
         initialSlide: 0,
         autoplay: true,
         autoplaySpeed: 5000,
@@ -126,14 +126,17 @@ export default function TopProducts() {
                                 {Array.isArray(products) && products.map((product: ProductTypes) => (
                                     <div key={product.id} className="flex items-center justify-center pr-2" aria-hidden={false}>
                                         <div className="flex flex-col gap-1 h-full top-products-card">
-                                            <div className="overflow-hidden aspect-square flex justify-center items-center top-products-img-box">
-                                                <img
-                                                    src={product?.images?.[0] ?? productDemo}
-                                                    alt={product?.title ?? "Product Image"}
-                                                    className="w-25 md:w-30 aspect-square"
-                                                    width={150}
-                                                    height={150}
-                                                />
+                                            <div className="overflow-hidden aspect-square  flex justify-center items-center top-products-img-box">
+                                                <div className="h-30 w-30 flex justify-center items-center">
+
+                                                    <img
+                                                        src={product?.images?.[0] ?? productDemo}
+                                                        alt={product?.title ?? "Product Image"}
+                                                        className=" object-fit"
+                                                        width={100}
+                                                        height={100}
+                                                    />
+                                                </div>
                                                 <div className="top-products-img-overlay">
                                                     <div className="top-products-img-overlay-actions flex justify-around items-center gap-3">
                                                         <button className="flex justify-center items-center h-10 w-10 rounded-full bg-white text-black hover:bg-black hover:text-white duration-500">

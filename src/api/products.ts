@@ -14,10 +14,10 @@ export const fetchDailyDeals = async () => {
 
 export const fetchTopProducts = async (end: number) => {
   try {
-    const { data } = await api.get(`/products?page=1&limit=18`);
+    const { data } = await api.get(`/products?page=1&limit=24`);
 
     // console.log("Top Products:", data.items);
-    const start = Math.max(0, end - 5);
+    const start = Math.max(0, end - 8);
     return data.items.slice(start, end);
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);

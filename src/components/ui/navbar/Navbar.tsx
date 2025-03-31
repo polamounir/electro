@@ -1,6 +1,4 @@
 "use client";
-
-
 // import { useState, useEffect } from "react";
 import { Menu, X, ShoppingCart, Search, PhoneCall, CircleUserRound } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,9 +12,11 @@ import {
 } from "./NavMenus"
 import { RootState } from "../../../app/store";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
     const { isSideMenuOpen, isCartMenuOpen, isSearchMenuOpen } = useSelector((state: RootState) => state.navbar);
+  
     const dispatch = useDispatch();
 
     const handleSideMenu = () => {
@@ -33,14 +33,32 @@ export default function Navbar() {
     // const handleCloseMenu = () => {
     //     dispatch(closeAllMenus());
     // }
+
+    const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > lastScrollY) {
+                setIsVisible(false);
+            } else {
+                setIsVisible(true);
+            }
+            setLastScrollY(currentScrollY);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [lastScrollY]);
     return (
-        <header>
+        <header className={`sticky ${isVisible ? "top-0" : "-top-8"} left-0 w-full z-50 bg-white duration-300 border-b border-teal-800 shadow-lg shadow-teal-400/15`}>
             <div className="bg-slate-100 text-black px-5 py-2">
                 <div className="flex justify-between">
                     <div className="flex items-center gap-2">
                         <button aria-label="User profile" className="hidde">
                             <Link to="/login" >
-                                <CircleUserRound size={20}/>
+                                <CircleUserRound size={20} />
                             </Link>
                         </button>
                         <small className="flex gap-1">
