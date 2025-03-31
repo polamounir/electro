@@ -1,6 +1,7 @@
 import { AxiosError } from "axios";
 import { api } from "./axiosInstance";
 import Cookies from "js-cookie";
+
 const token = Cookies.get("accessToken");
 
 export const fetchDailyDeals = async () => {
@@ -62,8 +63,7 @@ export const addToCart = async (productId: string, cartId: string) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization:
-            `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           productId: productId,
@@ -125,6 +125,12 @@ export const createOrder = async (data: OrderDetailTypes) => {
     return res.data;
   } catch (error) {
     if (error instanceof AxiosError) {
+      console.log(error);
+      if (error.status === 401) {
+        console.log("Unauthorized");
+
+        return {  code: 401, message: "Please Login first" };
+      }
       console.error(
         "Order creation failed:",
         error.response?.data || error.message

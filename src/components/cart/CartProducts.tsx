@@ -28,7 +28,7 @@ export default function CartProducts({ cartItems }: CartItemProps) {
         <div className="lg:col-span-3 p-10 flex flex-col gap-5 border border-gray-300 rounded-2xl text-xs md:text-sm lg:text-md">
             <h2 className="text-center">Your cart is empty</h2>
             <div className="flex justify-center">
-                <Link to="/products" className="bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition hover:bg-teal-700 duration-300">Shop Now</Link>
+                <Link to="/" className="bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition hover:bg-teal-700 duration-300">Shop Now</Link>
             </div>
         </div>)
     return (

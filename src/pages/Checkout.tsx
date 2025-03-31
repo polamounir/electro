@@ -3,7 +3,7 @@ import { AppDispatch, RootState } from "../app/store"
 import { useDispatch } from "react-redux"
 import { useEffect, useState } from "react"
 import { fetchCartAsync } from "../app/features/slices/cartSlice"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { createOrder } from "../api/products"
 import { toast } from "sonner"
 import { useQuery } from "@tanstack/react-query"
@@ -41,6 +41,7 @@ interface CouponDetailsTypes {
 
 }
 export default function Checkout() {
+    const navigate = useNavigate()
 
     const { data: deliveryMethods } = useQuery({
         queryKey: ["DeliveryMethods"],
@@ -170,8 +171,11 @@ export default function Checkout() {
 
         console.log(res);
         if (res.isSuccess) {
-            toast.success("Order created successfully!")
+            toast.success("order is being proccessed")
             window.location.href = res.paymentUrl;
+        } else if (res.code === 401) {
+            toast.error(res.message)
+            navigate("/login")
         }
         else {
             toast.error("Failed to create order")

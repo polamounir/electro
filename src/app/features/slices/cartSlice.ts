@@ -47,23 +47,10 @@ const initialState: CartState = {
 const getCartInitID = (): string => {
   let cartInitID = localStorage.getItem("cartInitID");
   if (!cartInitID) {
-    cartInitID = uuidv4();
+    cartInitID = uuidv4(); 
     localStorage.setItem("cartInitID", cartInitID);
   }
   return cartInitID;
-};
-export const fetchInitCart = async () => {
-  let cartInitID = localStorage.getItem("cartInitID");
-  if (!cartInitID) {
-    cartInitID = uuidv4();
-    localStorage.setItem("cartInitID", cartInitID);
-  }
-  try {
-    const response = await getCart(cartInitID);
-    return response;
-  } catch (error) {
-    return error instanceof Error ? error.message : "An unknown error occurred";
-  }
 };
 
 // -------------------------
@@ -94,6 +81,7 @@ export const addToCartAsync = createAsyncThunk<
     dispatch(initAppCart());
     const state = getState() as RootState;
     const cartId = state.cart.cart.id;
+    console.log("Cart ID:", cartId);
     try {
       await addToCart(productId, cartId);
       dispatch(fetchCartAsync());
@@ -130,6 +118,7 @@ const cartSlice = createSlice({
   reducers: {
     initAppCart: (state) => {
       state.cart.id = getCartInitID();
+
     },
   },
   extraReducers: (builder) => {
