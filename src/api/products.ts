@@ -1,5 +1,7 @@
 import { AxiosError } from "axios";
 import { api } from "./axiosInstance";
+import Cookies from "js-cookie";
+const token = Cookies.get("accessToken");
 
 export const fetchDailyDeals = async () => {
   try {
@@ -61,7 +63,7 @@ export const addToCart = async (productId: string, cartId: string) => {
         headers: {
           "Content-Type": "application/json",
           Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJjMmQ2Y2MxNy04MmQxLTQ0YjgtOWQ0MS0wOGRkNmQwOWY2Y2MiLCJGdWxsTmFtZSI6IlBvbGEgTW91bmlyIiwiZW1haWwiOiJwb3Bwb2xhMTAzQGdtYWlsLmNvbSIsIlVzZXJUeXBlIjoiVXNlciIsIm5iZiI6MTc0MzE0NzA2MywiZXhwIjoxODA3OTQ3MDYzLCJpYXQiOjE3NDMxNDcwNjN9.TMaEX0OS_8WO79YuPUdec3BUmZ2dyMhi_8mxJGrPLzc",
+            `Bearer ${token}`,
         },
         body: JSON.stringify({
           productId: productId,
@@ -85,8 +87,7 @@ export const getCart = async (id: string) => {
   try {
     const res = await fetch(`https://ecommerce.zerobytetools.com/cart/${id}`, {
       headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJjMmQ2Y2MxNy04MmQxLTQ0YjgtOWQ0MS0wOGRkNmQwOWY2Y2MiLCJGdWxsTmFtZSI6IlBvbGEgTW91bmlyIiwiZW1haWwiOiJwb3Bwb2xhMTAzQGdtYWlsLmNvbSIsIlVzZXJUeXBlIjoiVXNlciIsIm5iZiI6MTc0MzE0NzA2MywiZXhwIjoxODA3OTQ3MDYzLCJpYXQiOjE3NDMxNDcwNjN9.TMaEX0OS_8WO79YuPUdec3BUmZ2dyMhi_8mxJGrPLzc",
+        Authorization: `Bearer ${token}`,
       },
     });
     if (!res.ok) {

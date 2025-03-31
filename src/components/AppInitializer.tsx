@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { initAppCart } from "../app/features/slices/cartSlice";
+import {  fetchInitCart, initAppCart } from "../app/features/slices/cartSlice";
 
 
 const AppInitializer = () => {
@@ -8,9 +8,10 @@ const AppInitializer = () => {
 
     useEffect(() => {
         dispatch(initAppCart());
+        fetchInitCart()
         
     }, [dispatch]);
-
+    
     return null;
 };
 

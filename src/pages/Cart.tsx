@@ -10,12 +10,13 @@ import { Link } from "react-router-dom"
 export default function Cart() {
 
 
-    const { cart } = useSelector((state: RootState) => state.cart)
     const dispatch = useDispatch<AppDispatch>()
-
     useEffect(() => {
         dispatch(fetchCartAsync())
     }, [dispatch])
+    const { cart } = useSelector((state: RootState) => state.cart)
+    // console.log(cart?.cartItems)
+
     return (
         <div className="min-h-[75dvh] pb-50">
             <div className="p-2 pt-5 md:p-10 xl:px-40 flex flex-col gap-5">
@@ -30,6 +31,7 @@ export default function Cart() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start ">
                     {/* items */}
+
                     <CartProducts cartItems={cart?.cartItems ?? []} />
 
                     {/* sammary */}
@@ -39,7 +41,7 @@ export default function Cart() {
                             <div className="flex flex-col gap-1">
                                 <div className="flex items-center justify-between">
                                     <h2 className="text-gray-400">Subtotal</h2>
-                                    <h2 className="">{cart?.subTotal - cart?.shippingPrice} EGP</h2>
+                                    <h2 className="">{(cart?.subTotal - cart?.shippingPrice) || 0} EGP</h2>
                                 </div>
                                 {/* <div className="flex items-center justify-between">
                                     <h2 className="text-gray-400">Discount</h2>

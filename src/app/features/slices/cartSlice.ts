@@ -47,11 +47,25 @@ const initialState: CartState = {
 const getCartInitID = (): string => {
   let cartInitID = localStorage.getItem("cartInitID");
   if (!cartInitID) {
-    cartInitID = uuidv4(); 
+    cartInitID = uuidv4();
     localStorage.setItem("cartInitID", cartInitID);
   }
   return cartInitID;
 };
+export const fetchInitCart = async () => {
+  let cartInitID = localStorage.getItem("cartInitID");
+  if (!cartInitID) {
+    cartInitID = uuidv4();
+    localStorage.setItem("cartInitID", cartInitID);
+  }
+  try {
+    const response = await getCart(cartInitID);
+    return response;
+  } catch (error) {
+    return error instanceof Error ? error.message : "An unknown error occurred";
+  }
+};
+
 // -------------------------
 export const fetchCartAsync = createAsyncThunk<
   CartType,

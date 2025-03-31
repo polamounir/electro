@@ -15,6 +15,7 @@ import NotFound from "../pages/NotFound";
 import MyAccount from "../pages/MyAccount";
 import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
+import ScrollToTopNavigation from "../components/ui/ScrollToTopNavigation";
 
 
 
@@ -28,7 +29,7 @@ const AppRoutes = () => {
 
     return (
         <Router>
-
+            <ScrollToTopNavigation />
             <Navbar />
             <Routes>
                 <Route path="/" element={<Home />} />

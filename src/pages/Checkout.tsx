@@ -85,7 +85,7 @@ export default function Checkout() {
     const { cartItems, subTotal, shippingPrice, id } = useSelector((state: RootState) => state.cart.cart)
 
 
-    if (!cartItems.length) {
+    if (!cartItems?.length) {
         return (
             <div>
                 <h1>Your cart is empty</h1>
