@@ -10,8 +10,11 @@ import { RootState } from "../app/store";
 import ProductModel from "../components/home/ProductModel";
 
 
+
 export default function Home() {
     const isModelOpen = useSelector((state: RootState) => state.productModel.isOpen)
+
+
     return (
         <div>
             {isModelOpen && <ProductModel />}

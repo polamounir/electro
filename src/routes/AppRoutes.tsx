@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
-import PrivateRoute from "./PrivateRoute";
+// import PrivateRoute from "./PrivateRoute";
 import Dashboard from "../pages/Dashboard";
 import Navbar from "../components/ui/navbar/Navbar";
 import { useDispatch } from "react-redux";
@@ -41,7 +41,8 @@ const AppRoutes = () => {
                 <Route path="/category/*" element={<Category />} />
                 <Route path="/confirm-account/*" element={<AccountConfirmation />} />
                 <Route path="/checkout" element={<Checkout />} />
-                <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                {/* <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} /> */}
 
 
                 <Route path="*" element={<NotFound />} />

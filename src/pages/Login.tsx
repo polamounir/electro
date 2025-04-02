@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../app/features/slices/authSlice";
 import { toast } from "sonner";
+import { parseJwt } from "../api/user";
 
 export default function Login() {
     const [formData, setFormData] = useState({
@@ -14,13 +15,16 @@ export default function Login() {
     })
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate()
-    const { user, loading, error } = useSelector((state: RootState) => state.auth);
+    const {  loading } = useSelector((state: RootState) => state.auth);
+    const user = parseJwt()
+    console.log(user)
+
     const [isPasswordShown, setIsPasswordShown] = useState<boolean>(false)
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    console.log(error)
+    // console.log(error)
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
