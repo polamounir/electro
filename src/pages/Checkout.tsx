@@ -49,7 +49,7 @@ export default function Checkout() {
         queryKey: ["DeliveryMethods"],
         queryFn: fetchDeliveryMethods
     });
-    const { data: addresses = [], isLoading: addressesLoading, isError: addressesError } = useQuery({
+    const { data: addresses = [], isLoading: addressesLoading, error: addressesError } = useQuery({
         queryKey: ["userAddresses"],
         queryFn: getShippingAddress
     });
@@ -143,8 +143,7 @@ export default function Checkout() {
 
         try {
             const res = await createOrder(updatedOrder);
-            // console.log(res);
-
+            
             if (res.isSuccess) {
                 toast.success("Order is being processed.");
                 window.location.href = res.paymentUrl;
@@ -193,9 +192,9 @@ export default function Checkout() {
                                 {
                                     addressesError && <div><h2>Error Loading Address...</h2> </div>
                                 }
-                                { addresses?.map((option: AddressType, index: number) => (
+                                {addresses && addresses.length > 0 && Array(addresses).map((option: AddressType, index: number) => (
                                     <label
-                                        key={option.id}
+                                        key={option?.id}
                                         className=" p-3 flex justify- w-full items-center rounded-lg border border-transparent cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold "
                                     >
                                         <div className="relative z-10 ">
