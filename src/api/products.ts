@@ -6,9 +6,11 @@ const token = Cookies.get("accessToken");
 
 export const fetchDailyDeals = async () => {
   try {
-    const { data } = await api.get(`/products?page=1&limit=8`);
+    const res = await api.get(`/products?page=1&limit=8`);
 
-    return data.items;
+    // console.log("Products:", res);
+
+    return res.data.data.items;
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
     return null;
@@ -21,7 +23,8 @@ export const fetchTopProducts = async (end: number) => {
 
     // console.log("Top Products:", data.items);
     const start = Math.max(0, end - 8);
-    return data.items.slice(start, end);
+
+    return data.data.items.slice(start, end);
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
     return null;
@@ -34,7 +37,7 @@ export const fetchDiscountProducts = async () => {
 
     // console.log("Products:", data.items);
 
-    return data.items;
+    return data.data.items;
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
     return null;
@@ -46,12 +49,24 @@ export const fetchHomeProducts = async () => {
 
     // console.log("Products:", data.items);
 
-    return data.items;
+    return data.data.items;
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
     return null;
   }
 };
+export const fetchCategoryProducts = async () => {
+  try {
+    const { data } = await api.get(`/products?page=1&limit=20`);
+    return data.data.items;
+  } catch (error) {
+    console.error("There has been a problem with your fetch operation:", error);
+    return null;
+  }
+};
+// -----------------------------------------------
+// -----------------------------------------------
+// -----------------------------------------------
 // -----------------------------------------------
 // CART LOGIC
 export const addToCart = async (productId: string, cartId: string) => {
@@ -85,17 +100,14 @@ export const addToCart = async (productId: string, cartId: string) => {
 
 export const getCart = async (id: string) => {
   try {
-    const res = await fetch(`https://ecommerce.zerobytetools.com/cart/${id}`, {
+    const { data } = await api.get(`/cart/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (!res.ok) {
-      throw new Error("Failed to get cart");
-    }
-    const data = await res.json();
-    // console.log(data.cart);
-    return data.cart;
+    // console.log(data);
+
+    return data.data.cart;
   } catch (error) {
     console.log(error);
   }
@@ -104,80 +116,113 @@ export const getCart = async (id: string) => {
 // -----------------------------------------------
 // -----------------------------------------------
 
-interface ShippingAddress {
-  firstName: string;
-  lastName: string;
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
+export const fetchDeliveryMethods = async () => {
+  try {
+    const { data } = await api.get(`/dms`);
+
+    // console.log(data);
+
+    // return data.data.deliveryMethods;
+    return data.data;
+  } catch (error) {
+    console.error("There has been a problem with your fetch operation:", error);
+    return null;
+  }
+};
+
+// ----------------------------------------
+interface CouponType {
+  totalPrice: number;
+  code: string;
 }
+export const validateCoupon = async (couponData: CouponType) => {
+  console.log(couponData);
+  try {
+    const { data } = await api.post("/coupons/validate", couponData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(data);
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      // console.log(error);
+      return {
+        code: error.response?.data.status,
+        message: error.response?.data.detail,
+      };
+    }
+
+    console.error("Coupon validation failed:", error);
+    throw new Error("Failed to validate coupon");
+  }
+};
+
+// -----------------------------------------------------
+
+// interface ShippingAddress {
+//   id: string ;
+//   firstName: string;
+//   lastName: string;
+//   street: string;
+//   city: string;
+//   governorate: string;
+// }
+
+export const getShippingAddress = async () => {
+
+  try {
+    const { data } = await api.get(`/addresses`);
+    // console.log(data);
+    return data.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return {
+        code: error.response?.data.status,
+        message: error.response?.data.detail,
+      };
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
 interface OrderDetailTypes {
   cartId: string;
   couponCode: string | null;
-  shippingAddress: ShippingAddress;
+  address: string;
   paymentMethod: string;
   deliveryMethod: string;
 }
 export const createOrder = async (data: OrderDetailTypes) => {
   try {
     const res = await api.post(`/orders/create-order`, data);
+    // console.log(res.data);
     return res.data;
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.log(error);
-      if (error.status === 401) {
-        console.log("Unauthorized");
+      return {
+        code: error.response?.data.status,
+        message: error.response?.data.detail,
+      };
 
-        return {  code: 401, message: "Please Login first" };
-      }
-      console.error(
-        "Order creation failed:",
-        error.response?.data || error.message
-      );
-      throw new Error(
-        error.response?.data?.message || "Failed to create order"
-      );
+      // if (error.status === 401) {
+      //   console.log("Unauthorized");
+
+      //   return { code: 401, message: "Please Login first" };
+      // }
+
+      // console.error(
+      //   "Order creation failed:",
+      //   error.response?.data || error.message
+      // );
+
+      // throw new Error(
+      //   error.response?.data?.message || "Failed to create order"
+      // );
     }
     console.error("Unexpected error:", error);
     throw new Error("An unexpected error occurred");
   }
 };
-
-// export const createOrder = async (data: OrderDetailTypes) => {
-//   //   const token = Cookies.get("accessToken");
-//   // if (!token) {
-//   //   throw new Error("User not logged in");
-//   // }
-//   // try {
-//   //   const res = await fetch(
-//   //     "https://ecommerce.zerobytetools.com/api/orders/create-order",
-//   //     {
-//   //       method: "POST",
-//   //       headers: {
-//   //         "Content-Type": "application/json",
-//   //         Authorization: `Bearer ${Cookies.get("accessToken")}`,
-//   //       },
-//   //       body: JSON.stringify(data),
-//   //     }
-//   //   );
-//   //   if (!res.ok) {
-//   //     throw new Error("Error creating order");
-//   //   }
-//   //   const order = await res.json();
-//   //   console.log(order);
-//   //   return order;
-//   // } catch (error) {
-//   //   console.error(error);
-//   //   return "Error creating order";
-//   // }
-
-//   try {
-//     const res = await api.post(`/orders/create-order`, data);
-
-//     return res;
-//   } catch (error) {
-//     console.error("There has been a problem with your fetch operation:", error);
-//     return null;
-//   }
-// };

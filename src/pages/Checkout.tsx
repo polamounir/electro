@@ -4,24 +4,25 @@ import { useDispatch } from "react-redux"
 import { useEffect, useState } from "react"
 import { fetchCartAsync } from "../app/features/slices/cartSlice"
 import { Link, useNavigate } from "react-router-dom"
-import { createOrder } from "../api/products"
+import { createOrder, fetchDeliveryMethods, getShippingAddress, validateCoupon } from "../api/products"
 import { toast } from "sonner"
 import { useQuery } from "@tanstack/react-query"
 
 
-interface ShippingAddress {
-    firstName: string,
-    lastName: string,
-    street: string,
-    city: string,
-    state: string,
-    zipCode: string
-}
-interface OrderDetailTypes {
 
+interface AddressType {
+    id: string;
+    firstName: string;
+    lastName: string;
+    street: string;
+    city: string;
+    governorate: string;
+}
+
+interface OrderDetailTypes {
     cartId: string,
     couponCode: string | null,
-    shippingAddress: ShippingAddress,
+    address: string,
     paymentMethod: string,
     deliveryMethod: string,
 
@@ -40,25 +41,19 @@ interface CouponDetailsTypes {
     newDiscountedPrice: number
 
 }
+// -------------------------
 export default function Checkout() {
     const navigate = useNavigate()
 
     const { data: deliveryMethods } = useQuery({
         queryKey: ["DeliveryMethods"],
-        queryFn: async () => {
-            try {
-                const res = await fetch("https://ecommerce.zerobytetools.com/api/dms");
-                if (!res.ok) {
-                    throw new Error(`HTTP error! Status: ${res.status}`);
-                }
-                // console.log(res.json())
-                return res.json();
-            } catch (error) {
-                console.error("Error fetching delivery methods:", error);
-                throw error; // Ensures React Query handles the error properly
-            }
-        },
+        queryFn: fetchDeliveryMethods
     });
+    const { data: addresses = [], isLoading: addressesLoading, isError: addressesError } = useQuery({
+        queryKey: ["userAddresses"],
+        queryFn: getShippingAddress
+    });
+
     const [orderCoupon, setOrderCoupon] = useState("")
     const [couponDetails, setCouponDetails] = useState<CouponDetailsTypes>({
         discountValue: 0,
@@ -68,14 +63,7 @@ export default function Checkout() {
         {
             cartId: "",
             couponCode: "",
-            shippingAddress: {
-                firstName: "",
-                lastName: "",
-                street: "",
-                city: "",
-                state: "",
-                zipCode: "",
-            },
+            address: "",
             paymentMethod: "Online",
             deliveryMethod: "9d9e0d7e-a9a8-4d2a-c907-08dd6f6fbed6",
         }
@@ -83,26 +71,12 @@ export default function Checkout() {
     const dispatch = useDispatch<AppDispatch>()
 
     useEffect(() => { dispatch(fetchCartAsync()) }, [dispatch])
-    const { cartItems, subTotal, shippingPrice, id } = useSelector((state: RootState) => state.cart.cart)
+    const { cartItems, subTotal, shippingPrice, id: cartId } = useSelector((state: RootState) => state.cart.cart)
 
 
-    if (!cartItems?.length) {
-        return (
-            <div>
-                <h1>Your cart is empty</h1>
-                <Link to="/">Go back to shop</Link>
-            </div>
-        )
-    }
 
     const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setOrderDetail(prev => ({
-            ...prev,
-            shippingAddress: {
-                ...prev.shippingAddress,
-                [e.target.name]: e.target.value
-            }
-        }));
+        setOrderDetail({ ...orderDetail, address: e.target.value, });
     };
 
     const handleDeliveryMethodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,14 +84,14 @@ export default function Checkout() {
             ...prev,
             deliveryMethod: event.target.value,
         }));
-        console.log(orderDetail)
+
     };
     const handlePaymentMethodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setOrderDetail((prev) => ({
             ...prev,
             paymentMethod: event.target.value,
         }));
-        console.log(orderDetail)
+        // console.log(orderDetail)
     };
 
     const handleCouponChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,61 +100,67 @@ export default function Checkout() {
             newDiscountedPrice: 0
         })
         setOrderCoupon(event.target.value)
-        console.log(orderCoupon)
+        // console.log(orderCoupon)
     }
     const validateOrderCoupon = async () => {
-        const reqData = {
+
+        const res = await validateCoupon({
             totalPrice: subTotal,
             code: orderCoupon,
-        }
-        console.log(reqData)
-        try {
-            const res = await fetch(`https://ecommerce.zerobytetools.com/api/coupons/validate`, {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(reqData),
-            });
-            if (!res.ok) {
-                throw new Error(`HTTP error! Status: ${res.status}`);
-            }
-            const data = await res.json();
-            console.log(data);
-            if (data.error) {
-                toast.error(data.error);
-                setOrderCoupon("");
-            }
-            else {
-                setCouponDetails(data);
-                toast.success("Coupon applied successfully!");
-            }
-        } catch (error) {
-            console.error("Error fetching coupon:", error);
-            toast.error("Failed to apply coupon");
-            setOrderCoupon("");
-        }
-    }
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+        })
 
-        const updatedOrder = { ...orderDetail, cartId: id };
-        setOrderDetail(updatedOrder);
-        console.log(updatedOrder);
-        const res = await createOrder(updatedOrder)
-
-        console.log(res);
-        if (res.isSuccess) {
-            toast.success("order is being proccessed")
-            window.location.href = res.paymentUrl;
+        if (res.status == "Successful") {
+            setCouponDetails(res.data);
+            toast.success("Coupon applied successfully!");
         } else if (res.code === 401) {
             toast.error(res.message)
             navigate("/login")
         }
         else {
-            toast.error("Failed to create order")
+            toast.error(res.message)
+        }
+
+    }
+
+
+    // ------------------------------------------
+    const reformOrder = async () => {
+        let address = orderDetail.address;
+        if (address === "" && addresses?.length > 0) {
+            address = addresses[0].id;
+        }
+        const updatedOrder = {
+            ...orderDetail,
+            cartId: cartId,
+            address: address,
+        };
+        return updatedOrder
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const updatedOrder = await reformOrder();
+
+        try {
+            const res = await createOrder(updatedOrder);
+            // console.log(res);
+
+            if (res.isSuccess) {
+                toast.success("Order is being processed.");
+                window.location.href = res.paymentUrl;
+            } else if (res.code === 401) {
+                toast.error(res.message);
+                navigate("/login");
+            } else {
+                toast.error(res.message);
+            }
+        } catch (error) {
+            console.error("Error during order creation:", error);
+            toast.error("An error occurred while creating the order.");
         }
     };
+
+
 
     const paymentMethods = [
         { id: "1", name: "Online", description: "Secure payment processing" },
@@ -188,6 +168,13 @@ export default function Checkout() {
     ]
     return (
         <div className="min-h-[75dvh] pb-50">
+            {
+                cartItems?.length === 0 &&
+                <div className="flex flex-col gap-5 justify-center items-center h-[60dvh] pb-20">
+                    <h2 className="font-bold text-3xl">Your Cart is Empty</h2>
+                    <Link to="/" className="px-5 py-2 font-bold bg-teal-500 text-white rounded-md">Go to Shop</Link>
+                </div>
+            }
             <div className="p-2 pt-5 md:p-10 xl:px-40 flex flex-col gap-5">
                 <h2 className="font-bold text-xl">Order Details</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start ">
@@ -196,46 +183,44 @@ export default function Checkout() {
                         <div className="border border-gray-300 rounded-2xl">
                             <div className="p-5 flex justify-between items-center">
                                 <h2 className="font-semibold text-lg">Shipping Address</h2>
-                                <button className="px-3 py-1 font-bold ">Edit</button>
+                                <button className="px-3 py-1 font-bold ">Add</button>
                             </div>
                             <hr className="border-gray-300" />
-                            <div className="text-md p-5 grid grid-cols-1 md:grid-cols-2 gap-2">
-                                <div>
-                                    <h2>First Name</h2>
-                                    <input type="text" name="firstName"
-                                        onChange={handleAddressChange}
-                                        className="w-full border border-gray-400 rounded-sm py-1 px-5" />
-                                </div>
-                                <div>
-                                    <h2>Last Name</h2>
-                                    <input type="text" name="lastName"
-                                        onChange={handleAddressChange}
-                                        className="w-full border border-gray-400 rounded-sm py-1 px-5" />
-                                </div>
-                                <div>
-                                    <h2>state</h2>
-                                    <input type="text" name="state"
-                                        onChange={handleAddressChange}
-                                        className="w-full border border-gray-400 rounded-sm py-1 px-5" />
-                                </div>
-                                <div>
-                                    <h2>City</h2>
-                                    <input type="text" name="city"
-                                        onChange={handleAddressChange}
-                                        className="w-full border border-gray-400 rounded-sm py-1 px-5" />
-                                </div>
-                                <div>
-                                    <h2>Street</h2>
-                                    <input type="text" name="street"
-                                        onChange={handleAddressChange}
-                                        className="w-full border border-gray-400 rounded-sm py-1 px-5" />
-                                </div>
-                                <div>
-                                    <h2>Zip Code</h2>
-                                    <input type="text" name="zipCode"
-                                        onChange={handleAddressChange}
-                                        className="w-full border border-gray-400 rounded-sm py-1 px-5" />
-                                </div>
+                            <div className="text-md p-5 flex flex-col gap-2">
+                                {
+                                    addressesLoading && <div><h2>Loading Address ...</h2> </div>
+                                }
+                                {
+                                    addressesError && <div><h2>Error Loading Address...</h2> </div>
+                                }
+                                { addresses?.map((option: AddressType, index: number) => (
+                                    <label
+                                        key={option.id}
+                                        className=" p-3 flex justify- w-full items-center rounded-lg border border-transparent cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold "
+                                    >
+                                        <div className="relative z-10 ">
+                                            <div className="flex flex-col gap-2 w-full">
+
+                                                <h2>{option.firstName} {option.lastName}</h2>
+                                                <div>
+
+                                                    <h2>Address</h2>
+                                                    <h2>{option.street}</h2>
+                                                    <h2>{option.city}</h2>
+                                                    <h2>{option.governorate}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input
+                                            type="radio"
+                                            name="address"
+                                            value={option.id}
+                                            className="hidden"
+                                            checked={addresses.length === 1 && index === 0}
+                                            onChange={handleAddressChange}
+                                        />
+                                    </label>
+                                ))}
 
                             </div>
                         </div>

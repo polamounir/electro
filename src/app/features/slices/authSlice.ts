@@ -43,17 +43,16 @@ export const loginUser = createAsyncThunk<
   { rejectValue: string | null }
 >("auth/loginUser", async ({ username, password }, { rejectWithValue }) => {
   try {
-    const response = await api.post("/auth/login", {
+    const { data } = await api.post("/auth/login", {
       username,
       password,
     });
 
-    const { accessToken, email } = response.data;
+    console.log(data);
+    const { accessToken, email } = data.data;
 
     Cookies.set("accessToken", accessToken, { expires: 7, secure: true });
     Cookies.set("email", email, { expires: 7, secure: true });
-
-    console.log(response.data);
 
     // Make sure to return the correct structure
     return { email, accessToken };

@@ -9,6 +9,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: "https://ecommerce.zerobytetools.com",
+        
         changeOrigin: true,
         secure: false,
       },

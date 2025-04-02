@@ -16,6 +16,7 @@ import MyAccount from "../pages/MyAccount";
 import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
 import ScrollToTopNavigation from "../components/ui/ScrollToTopNavigation";
+import Category from "../pages/Category";
 
 
 
@@ -37,6 +38,7 @@ const AppRoutes = () => {
                 <Route path="/register" element={<Register />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/profile" element={<MyAccount />} />
+                <Route path="/category/*" element={<Category />} />
                 <Route path="/confirm-account/*" element={<AccountConfirmation />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
