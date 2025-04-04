@@ -1,7 +1,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { getCart, addToCart } from "../../../api/products";
+import {
+  getCart,
+  addToCart,
+  deleteFromCart,
+  changeProductQuantity,
+} from "../../../api/products";
 import { RootState } from "../../store";
 import { v4 as uuidv4 } from "uuid";
+import { toast } from "sonner";
 
 // Define types for cart items and cart
 interface CartItem {
@@ -47,7 +53,7 @@ const initialState: CartState = {
 const getCartInitID = (): string => {
   let cartInitID = localStorage.getItem("cartInitID");
   if (!cartInitID) {
-    cartInitID = uuidv4(); 
+    cartInitID = uuidv4();
     localStorage.setItem("cartInitID", cartInitID);
   }
   return cartInitID;
@@ -94,23 +100,64 @@ export const addToCartAsync = createAsyncThunk<
   }
 );
 
-// export const removeFromCartAsync = createAsyncThunk<
-//   string,
-//   string,
-//   { rejectValue: string }
-// >(
-//   "cart/removeFromCart",
-//   async (productId, { rejectWithValue, dispatch }) => {
-//     try {
-//       await removeFromCart(productId);
-//       // Refresh cart after removing item
-//       dispatch(fetchCartAsync());
-//       return productId;
-//     } catch (error) {
-//       return rejectWithValue(error instanceof Error ? error.message : "An unknown error occurred");
-//     }
-//   }
-// );
+export const removeFromCartAsync = createAsyncThunk<
+  string,
+  { productId: string; quantity: number },
+  { rejectValue: string }
+>(
+  "cart/removeFromCart",
+  async ({ productId, quantity }, { rejectWithValue, dispatch, getState }) => {
+    try {
+      const state = getState() as RootState;
+      const cartId = state.cart.cart.id;
+
+      await deleteFromCart(productId, cartId, quantity);
+
+      // Refresh cart after removing item
+      dispatch(fetchCartAsync());
+
+      return productId;
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : "An unknown error occurred"
+      );
+    }
+  }
+);
+
+export const setProductQuantityAsync = createAsyncThunk<
+  string,
+  { productId: string; quantity: number },
+  { rejectValue: string }
+>(
+  "cart/setProductQuantity",
+  async ({ productId, quantity }, { rejectWithValue, dispatch, getState }) => {
+    try {
+      const state = getState() as RootState;
+      const cartId = state.cart.cart.id;
+
+      const res: {
+        code: number;
+        message: string;
+      } = await changeProductQuantity(productId, cartId, quantity);
+
+    
+      if (res.code === 200) {
+        toast.success("Quantity updated successfully");
+      }else{
+        toast.error(res.message || "Min quantity is 1");
+      }
+      // Refresh cart after removing item
+      dispatch(fetchCartAsync());
+
+      return productId;
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : "An unknown error occurred"
+      );
+    }
+  }
+);
 
 const cartSlice = createSlice({
   name: "cart",
@@ -118,7 +165,6 @@ const cartSlice = createSlice({
   reducers: {
     initAppCart: (state) => {
       state.cart.id = getCartInitID();
-
     },
   },
   extraReducers: (builder) => {
@@ -150,19 +196,30 @@ const cartSlice = createSlice({
       .addCase(addToCartAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload as string;
-      });
+      })
 
-    // .addCase(removeFromCartAsync.pending, (state) => {
-    //   state.status = "loading";
-    // })
-    // .addCase(removeFromCartAsync.fulfilled, (state) => {
-    //   state.status = "succeeded";
-    //   state.error = null;
-    // })
-    // .addCase(removeFromCartAsync.rejected, (state, action) => {
-    //   state.status = "failed";
-    //   state.error = action.payload as string;
-    // });
+      // .addCase(removeFromCartAsync.pending, (state) => {
+      //   state.status = "loading";
+      // })
+      // .addCase(removeFromCartAsync.fulfilled, (state) => {
+      //   state.status = "succeeded";
+      //   state.error = null;
+      // })
+      // .addCase(removeFromCartAsync.rejected, (state, action) => {
+      //   state.status = "failed";
+      //   state.error = action.payload as string;
+      // });
+      .addCase(setProductQuantityAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(setProductQuantityAsync.fulfilled, (state) => {
+        state.status = "succeeded";
+        state.error = null;
+      })
+      .addCase(setProductQuantityAsync.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload as string;
+      });
   },
 });
 

@@ -112,7 +112,7 @@ export default function AllProducts() {
                     >
                         {/* {loadingMore ? "Loading..." : "Load More"} */}
 
-                        Load More
+                        View All
                     </button>
                 </div>
             </div>

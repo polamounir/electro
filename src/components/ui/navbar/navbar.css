@@ -84,3 +84,39 @@ nav {
 .nav-categories-content {
   overflow: hidden;
 }
+
+/* ------------------------------ */
+
+.logged-account-box-menu-link {
+  position: relative;
+  padding: 5px 0;
+}
+.logged-account-box-menu-link::before {
+  content: "";
+  height: 1px;
+  background: #000000;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  transition: all 0.3s;
+}
+.logged-account-box-menu-link:hover::before {
+  width: 100%;
+}
+
+.logged-account-content-box {
+  display: grid;
+  width: max-content;
+  grid-template-rows: 0fr;
+padding: 0 20px;
+  transition: grid-template-rows 0.5s ease 0.2s;
+  min-width: 18rem;
+}
+.logged-account-box-menu {
+  overflow: hidden;
+}
+
+.logged-account-box:hover .logged-account-content-box {
+  grid-template-rows: 1fr;
+}

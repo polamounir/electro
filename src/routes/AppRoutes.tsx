@@ -1,54 +1,64 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-// import PrivateRoute from "./PrivateRoute";
-import Dashboard from "../pages/Dashboard";
-import Navbar from "../components/ui/navbar/Navbar";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { fetchUser } from "../app/features/slices/authSlice";
-import { AppDispatch } from "../app/store";
-import Register from "../pages/Register";
-import AccountConfirmation from "../pages/AccountConfirmation";
-import Footer from "../components/ui/Footer";
-import NotFound from "../pages/NotFound";
-import MyAccount from "../pages/MyAccount";
-import Cart from "../pages/Cart";
-import Checkout from "../pages/Checkout";
+import { Suspense, lazy } from "react";
 import ScrollToTopNavigation from "../components/ui/ScrollToTopNavigation";
-import Category from "../pages/Category";
+import Navbar from "../components/ui/navbar/Navbar";
+import Footer from "../components/ui/Footer";
+import Logout from "@/pages/Logout";
 
+// Lazy Loaded Components
+const Home = lazy(() => import("../pages/Home"));
+const Login = lazy(() => import("../pages/Login"));
+const Register = lazy(() => import("../pages/Register"));
+const AccountConfirmation = lazy(() => import("../pages/AccountConfirmation"));
+const NotFound = lazy(() => import("../pages/NotFound"));
+const MyAccount = lazy(() => import("../pages/MyAccount"));
+const Cart = lazy(() => import("../pages/Cart"));
+const Checkout = lazy(() => import("../pages/Checkout"));
+const Category = lazy(() => import("../pages/Category"));
+// const Dashboard = lazy(() => import("../pages/Dashboard"));
 
+const Loading = () => <div>Loading...</div>;
 
+// const Layout = ({ children }: { children: React.ReactNode }) => {
+//     const location = useLocation();
+//     const hideLayout = location.pathname.startsWith("/dashboard"); // Adjust if needed
+
+//     return (
+//         <>
+
+//             {!hideLayout && <Navbar />}
+//             {children}
+//             {!hideLayout && <Footer />}
+//         </>
+//     );
+// };
 
 const AppRoutes = () => {
-    const dispatch = useDispatch<AppDispatch>(); // Use correct dispatch type
-
-    useEffect(() => {
-        dispatch(fetchUser()); // Now TypeScript understands fetchUser is an async thunk
-    }, [dispatch]);
-
     return (
         <Router>
+
             <ScrollToTopNavigation />
             <Navbar />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/profile" element={<MyAccount />} />
-                <Route path="/category/*" element={<Category />} />
-                <Route path="/confirm-account/*" element={<AccountConfirmation />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                {/* <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} /> */}
+            <Suspense fallback={<Loading />}>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/category/*" element={<Category />} />
+                    <Route path="/confirm-account/*" element={<AccountConfirmation />} />
+                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/checkout-success" element={<Checkout />} />
 
-
-                <Route path="*" element={<NotFound />} />
-
-            </Routes>
+                    <Route path="/profile/*" element={<MyAccount />} />
+                    <Route path="/logout" element={<Logout />} />
+                    {/* <Route path="/dashboard/*" element={<Dashboard />} /> */}
+                    {/* <Route path="/forbidden" element={<Forbidden />} /> */}
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </Suspense>
             <Footer />
+
         </Router>
     );
 };

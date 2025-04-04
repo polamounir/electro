@@ -1,7 +1,7 @@
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { AppDispatch } from "../../app/store";
 import { useDispatch } from "react-redux";
-import { addToCartAsync } from "../../app/features/slices/cartSlice";
+import { addToCartAsync, removeFromCartAsync } from "../../app/features/slices/cartSlice";
 import { Link } from "react-router-dom";
 
 interface CartItem {
@@ -24,6 +24,14 @@ export default function CartProducts({ cartItems }: CartItemProps) {
         dispatch(addToCartAsync(id))
     }
 
+    const handleProductQuantity = (id: string, qun: number) => {
+        dispatch(removeFromCartAsync({ productId: id, quantity: qun }))
+    }
+    const handleRemoveProduct = (id: string, qun: number) => {
+        const newqun = qun - 1
+        dispatch(removeFromCartAsync({ productId: id, quantity: newqun }))
+    }
+
     if (cartItems.length === 0) return (
         <div className="lg:col-span-3 p-10 flex flex-col gap-5 border border-gray-300 rounded-2xl text-xs md:text-sm lg:text-md">
             <h2 className="text-center">Your cart is empty</h2>
@@ -44,12 +52,12 @@ export default function CartProducts({ cartItems }: CartItemProps) {
                                 <h3 className="">{item.title}</h3>
                                 <h2 className="text-sm font-semibold md:text-lg">{item.price * item.quantity} EGP</h2>
                                 {/* <p>{String(item.description).length > 100 ? item.description?.slice(0, 70) : item.description} {String(item.description).length > 100 && "..."}</p> */}
-                                <button className="absolute end-0 top-0"><Trash2 color="#ff0000" /></button>
+                                <button className="absolute end-0 top-0" onClick={() => handleProductQuantity(item.id, 0)}><Trash2 color="#ff0000" /></button>
                             </div>
                             <div className="flex justify-end items-end pt-2">
                                 <div className="bg-gray-200 rounded-full overflow-hidden ">
                                     <div className="flex items-center gap-3">
-                                        <button className="p-1 lg:h-10 lg:w-12 flex justify-center items-center"><Minus /></button>
+                                        <button className="p-1 lg:h-10 lg:w-12 flex justify-center items-center" onClick={() => handleRemoveProduct(item.id, item.quantity)}><Minus /></button>
                                         <span className="flex justify-center items-center w-8">{item.quantity}</span>
                                         <button className="p-1 lg:h-10 lg:w-12 flex justify-center items-center" onClick={() => handleAddProduct(item.id)}><Plus /></button>
                                     </div>

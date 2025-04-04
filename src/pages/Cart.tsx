@@ -15,7 +15,7 @@ export default function Cart() {
         dispatch(fetchCartAsync())
     }, [dispatch])
     const { cart } = useSelector((state: RootState) => state.cart)
-    // console.log(cart?.cartItems)
+
 
     return (
         <div className="min-h-[75dvh] pb-50">

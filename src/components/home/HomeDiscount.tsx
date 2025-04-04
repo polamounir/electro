@@ -63,27 +63,8 @@ export default function HomeDiscount() {
 
                                     />
                                 </div>
-                                {/* <div className="my-3 p-3 px-5  border-t border-b border-gray-200 ">
-                                    <div className="flex justify-between">
-
-                                        <button className="">
-                                            <ShoppingCart />
-                                        </button>
-                                        <button className="" onClick={() => previewProduct(product.id)}>
-                                            <Eye />
-                                        </button>
-                                        <button className="">
-                                            {product.isWishlisted ? (
-                                                <Heart color="#ff0000" fill="#ff0000" />
-                                            ) : (
-                                                <Heart />
-                                            )}
-                                        </button>
-                                    </div>
-                                </div> */}
 
                                 <div className="text-center text-xs md:text-sm">
-
                                     <p className="font-bold">{product.title}</p>
                                     <div className="price flex justify-center gap-5">
                                         <p className="old line-through text-gray-400">{product.price} EGP</p>
@@ -101,7 +82,7 @@ export default function HomeDiscount() {
                 </div>
                 <div className="flex justify-center">
                     <Link to="/" className="">
-                        <button className=" bg-black text-white px-10 py-3 rounded-md font-semibold">View More</button>
+                        <button className=" bg-black text-white px-10 py-3 rounded-md font-semibold">View All</button>
                     </Link>
                 </div>
             </div>

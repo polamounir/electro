@@ -1,17 +1,23 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { api } from "../../../api/axiosInstance";
 import Cookies from "js-cookie";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
+import { getUserData } from "../../../api/user";
 
-interface User {
+// Well-defined types
+interface UserTypes {
+  fullName: string;
   id: string;
-  name: string;
   email: string;
+  userType: string;
+  phoneNumber: string;
 }
+
 interface LoginUserResponse {
   email: string;
   accessToken: string;
 }
+
 interface RegisterUserResponse {
   userName: string;
   userId: string;
@@ -19,10 +25,12 @@ interface RegisterUserResponse {
 }
 
 interface AuthState {
-  user: User | null;
+  user: UserTypes | null;
   loading: boolean;
   error: string | string[] | null;
+  isAuthenticated: boolean;
 }
+
 interface RegisterUserPayload {
   fullName: string;
   phoneNumber: string;
@@ -30,17 +38,54 @@ interface RegisterUserPayload {
   password: string;
 }
 
+// Centralized token management
+const TOKEN_KEY = "accessToken";
+const EMAIL_KEY = "email";
+const USER_ID_KEY = "userId";
+const USER_NAME_KEY = "userName";
+const FULL_NAME_KEY = "fullName";
+
+// Helper functions for token management
+const saveAuthData = (token: string, email: string): void => {
+  Cookies.set(TOKEN_KEY, token);
+  Cookies.set(EMAIL_KEY, email);
+};
+
+const saveUserData = (
+  userId: string,
+  userName: string,
+  fullName: string
+): void => {
+  localStorage.setItem(USER_ID_KEY, userId);
+  localStorage.setItem(USER_NAME_KEY, userName);
+  localStorage.setItem(FULL_NAME_KEY, fullName);
+};
+
+const clearAuthData = (): void => {
+  Cookies.remove(TOKEN_KEY);
+  Cookies.remove(EMAIL_KEY);
+  localStorage.removeItem(USER_ID_KEY);
+  localStorage.removeItem(USER_NAME_KEY);
+  localStorage.removeItem(FULL_NAME_KEY);
+};
+
+// Check if user is already authenticated
+const hasValidToken = (): boolean => {
+  return !!Cookies.get(TOKEN_KEY);
+};
+
 const initialState: AuthState = {
   user: null,
   loading: false,
   error: null,
+  isAuthenticated: hasValidToken(),
 };
 
-// Login
+// Login thunk
 export const loginUser = createAsyncThunk<
   LoginUserResponse,
   { username: string; password: string },
-  { rejectValue: string | null }
+  { rejectValue: string }
 >("auth/loginUser", async ({ username, password }, { rejectWithValue }) => {
   try {
     const { data } = await api.post("/auth/login", {
@@ -48,39 +93,64 @@ export const loginUser = createAsyncThunk<
       password,
     });
 
-    console.log(data);
     const { accessToken, email } = data.data;
-
-    Cookies.set("accessToken", accessToken, { expires: 7, secure: true });
-    Cookies.set("email", email, { expires: 7, secure: true });
-
-    // Make sure to return the correct structure
-    return { email, accessToken };
-  } catch (error: unknown) {
-    const axiosError = error as AxiosError<{ detail?: string }>;
-
-    return rejectWithValue(axiosError.response?.data?.detail || "Login failed");
-  }
-});
-
-// Logout
-export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
-  await api.post("/auth/logout");
-});
-
-export const fetchUser = createAsyncThunk<User, void, { rejectValue: null }>(
-  "auth/fetchUser",
-  async (_, { rejectWithValue }) => {
-    // console.log("INIT");
-    try {
-      const response = await api.get("/auth/me");
-      return response.data;
-    } catch {
-      return rejectWithValue(null);
+    saveAuthData(accessToken, email);
+    const userData = await Promise.resolve(getUserData());
+    if (!userData) {
+      throw new Error("Invalid or missing token");
     }
-  }
-);
 
+    // Return both login response and user data
+    return {
+      email,
+      accessToken,
+      userData: {
+        fullName: userData.fullName || "",
+        id: userData.nameid || "",
+        email: userData.email || "",
+        userType: userData.UserType || "",
+        phoneNumber: userData.phoneNumber || "",
+      },
+    };
+  } catch (error) {
+    const axiosError = error as AxiosError<{ detail?: string }>;
+    const errorMessage =
+      axiosError.response?.data?.detail ||
+      "Invalid credentials or server error";
+
+    return rejectWithValue(errorMessage);
+  }
+});
+
+// Fetch user thunk
+export const fetchUser = createAsyncThunk<
+  UserTypes,
+  void,
+  { rejectValue: string }
+>("auth/fetchUser", async (_, { rejectWithValue }) => {
+  try {
+    if (!hasValidToken()) {
+      return rejectWithValue("No authentication token found");
+    }
+    const user = await Promise.resolve(getUserData());
+    if (!user) {
+      throw new Error("Invalid or missing token");
+    }
+
+    return {
+      fullName: user.fullName || "",
+      id: user.nameid || "",
+      email: user.email || "",
+      userType: user.UserType || "",
+      phoneNumber: user.phoneNumber || "",
+    };
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    return rejectWithValue("Failed to fetch user data");
+  }
+});
+
+// Register user thunk
 export const registerUser = createAsyncThunk<
   RegisterUserResponse,
   RegisterUserPayload,
@@ -91,65 +161,124 @@ export const registerUser = createAsyncThunk<
       "/auth/register",
       userData
     );
-    console.log("REGISTER", response, response.data);
+
     const { userId, userName } = response.data;
+    saveUserData(userId, userName, userData.fullName);
 
-    localStorage.setItem("userId", userId);
-    localStorage.setItem("userName", userName);
-    localStorage.setItem("fullName", userData.fullName);
     return { userId, userName, name: userData.fullName };
-  } catch (error: unknown) {
-    if (error instanceof Error && "response" in error) {
-      const axiosError = error as {
-        response?: { data?: { errors?: string[]; detail?: string } };
-      };
+  } catch (error) {
+    // Improved error handling
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError<{
+        errors?: string[];
+        detail?: string;
+      }>;
 
-      console.log(axiosError.response);
-
-      return rejectWithValue(
-        axiosError.response?.data?.errors?.join(" * ") ||
-          axiosError.response?.data?.detail ||
-          "Registration failed"
-      );
+      const errorData = axiosError.response?.data;
+      const errorMessage =
+        errorData?.errors?.join(" * ") ||
+        errorData?.detail ||
+        "Registration failed";
+      return rejectWithValue(errorMessage);
     }
-    return rejectWithValue("Registration failed");
+
+    return rejectWithValue("An unexpected error occurred during registration");
   }
 });
+
+// Logout user thunk
+export const logoutUser = createAsyncThunk("auth/logout", async () => {
+  clearAuthData();
+        localStorage.removeItem("cartInitID");
+        localStorage.removeItem("cart");
+  return null;
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    clearErrors: (state) => {
+      state.error = null;
+
+    },
+  },
   extraReducers: (builder) => {
     builder
+
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(
         loginUser.fulfilled,
-        (state, action: PayloadAction<LoginUserResponse>) => {
+        (
+          state,
+          action: PayloadAction<LoginUserResponse & { userData?: UserTypes }>
+        ) => {
           state.loading = false;
-          state.user = {
+          state.isAuthenticated = true;
+          // console.log("action.payload", action.payload);
+          state.user = action.payload.userData || {
             id: "",
-            name: "",
+            fullName: "",
             email: action.payload.email,
+            userType: "",
+            phoneNumber: "",
           };
+          state.error = null;
         }
       )
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload ?? "An unknown error occurred";
+        state.isAuthenticated = false;
+        state.user = null;
+        state.error = action.payload || "Authentication failed";
       })
+
+      // Fetch user cases
+      .addCase(fetchUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchUser.fulfilled,
+        (state, action: PayloadAction<UserTypes>) => {
+          state.loading = false;
+          state.user = action.payload;
+          state.isAuthenticated = true;
+          state.error = null;
+        }
+      )
+      .addCase(fetchUser.rejected, (state, action) => {
+        state.loading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+        state.error = action.payload || "Failed to fetch user data";
+      })
+
+      // Register cases
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Registration failed";
+      })
+
+      // Logout case
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
-      })
-      .addCase(fetchUser.fulfilled, (state, action: PayloadAction<User>) => {
-        state.user = action.payload;
-      })
-      .addCase(fetchUser.rejected, (state) => {
-        state.user = null;
+        state.isAuthenticated = false;
+        state.error = null;
       });
   },
 });
 
+export const { clearErrors } = authSlice.actions;
 export default authSlice.reducer;

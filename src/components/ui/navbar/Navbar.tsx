@@ -1,6 +1,6 @@
 "use client";
 // import { useState, useEffect } from "react";
-import { Menu, X, ShoppingCart, Search, PhoneCall, CircleUserRound } from "lucide-react";
+import { Menu, X, ShoppingCart, Search, PhoneCall, CircleUserRound, MapPinCheck, LogOut } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleCartMenu, toggleSearchMenu, toggleSideMenu } from "../../../app/features/slices/navbarSlice";
 
@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 
 export default function Navbar() {
     const { isSideMenuOpen, isCartMenuOpen, isSearchMenuOpen } = useSelector((state: RootState) => state.navbar);
-  
+
     const dispatch = useDispatch();
 
     const handleSideMenu = () => {
@@ -36,6 +36,7 @@ export default function Navbar() {
 
     const [isVisible, setIsVisible] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
+    const user = useSelector((state: RootState) => state.auth.user);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -54,23 +55,57 @@ export default function Navbar() {
     return (
         <header className={`sticky ${isVisible ? "top-0" : "-top-8"} left-0 w-full z-50 bg-white duration-300 border-b border-teal-800 shadow-lg shadow-teal-400/15`}>
             <div className="bg-slate-100 text-black px-5 py-2">
-                <div className="flex justify-between">
-                    <div className="flex items-center gap-2">
-                        <button aria-label="User profile" className="hidde">
-                            <Link to="/login" >
-                                <CircleUserRound size={20} />
-                            </Link>
-                        </button>
-                        <small className="flex gap-1">
-                            <Link to="/login">
-                                login
-                            </Link>/
-                            <Link to="/register">
-                                Rigister
-                            </Link>
-                        </small>
+                <div className="flex justify-between items-center">
+
+                    {
+                        user ? (
+                            <div className="logged-account-box relative py-1 text-xl pe-10 px-2">
+                                <button className="logged-account-box-name font-semibold capitalize" >
+                                    Hi , {user.fullName}
+                                </button>
+                                <div className="logged-account-content-box absolute start-0 top-full bg-gray-200 rounded border-gray-300 ">
+
+                                    <div className="logged-account-box-menu flex flex-col ">
+                                        <Link to="/profile" className="logged-account-box-menu-link flex items-center gap-2 hover: px-3 py-1 mt-5">
+                                            <CircleUserRound />
+                                            Profile
+                                        </Link>
+                                        <hr className="border-gray-300" />
+                                        <Link to="/profile/addresses" className="logged-account-box-menu-link flex items-center gap-2 hover: px-3 py-1 ">
+                                            <MapPinCheck />
+                                            Addresses
+                                        </Link>
+                                        <hr className="border-gray-300" />
+
+                                        <Link to="/logout" className="logged-account-box-menu-link flex items-center gap-2 hover: px-3 py-1  ">
+                                            <LogOut />
+                                            Logout
+                                        </Link>
+                                        <hr className="border-gray-300 mb-5" />
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+
+                            <div className="flex items-center gap-2">
+                                <button aria-label="User profile" className="hidde">
+                                    <Link to="/login" >
+                                        <CircleUserRound size={20} />
+                                    </Link>
+                                </button>
+                                <small className="flex gap-1">
+                                    <Link to="/login">
+                                        login
+                                    </Link>/
+                                    <Link to="/register">
+                                        Rigister
+                                    </Link>
+                                </small>
+                            </div>
+                        )}
+                    <div>
+                        <h2 className="flex items-center gap-2 text-xs md:text-sm"><PhoneCall size={15} />01234567890</h2>
                     </div>
-                    <h2 className="flex items-center gap-2 text-xs md:text-sm"><PhoneCall size={15} />01234567890</h2>
                 </div>
             </div>
             <nav className="h-[60px] flex items-center justify-center border-b shadow-md bg-white" role="navigation" >

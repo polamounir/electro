@@ -1,15 +1,16 @@
-// import { useEffect } from "react";
-// import { useDispatch } from "react-redux";
-// import { initAppCart } from "../app/features/slices/cartSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../app/store";
+import { fetchUser } from "../app/features/slices/authSlice";
+import { useEffect } from "react";
 
 
 const AppInitializer = () => {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
-    // useEffect(() => {
-    //     dispatch(initAppCart());
-        
-    // }, [dispatch]);
+    useEffect(() => {
+        dispatch(fetchUser());
+    }, [dispatch]);
+
 
     return null;
 };

@@ -15,7 +15,7 @@ export default function Login() {
     })
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate()
-    const {  loading } = useSelector((state: RootState) => state.auth);
+    const { loading } = useSelector((state: RootState) => state.auth);
     const user = parseJwt()
     console.log(user)
 
@@ -35,7 +35,7 @@ export default function Login() {
             // await dispatch(fetchUser());
 
             toast.success("Logged in successfully!");
-            navigate("/dashboard")
+            navigate("/")
 
         } catch (err: unknown) {
             console.error("Login failed:", err);

@@ -98,6 +98,53 @@ export const addToCart = async (productId: string, cartId: string) => {
   }
 };
 
+export const changeProductQuantity = async (
+  productId: string,
+  cartId: string,
+  quantity: number
+) => {
+  console.log("Product:", productId);
+  try {
+    const res = await api.post("/cart/update-cart", {
+      productId: productId,
+      cartId: cartId,
+      quantity: quantity,
+    });
+    console.log(res);
+    return {
+      code: res.status,
+      message: res.data.message,
+    };
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return {
+        code: error.response?.data.status,
+        message: error.response?.data.detail,
+      };
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+export const deleteFromCart = async (
+  productId: string,
+  cartId: string,
+  quantity: number
+) => {
+  console.log("Product:", productId);
+  try {
+    const res = await api.post("/cart/update-cart", {
+      productId: productId,
+      cartId: cartId,
+      quantity: quantity,
+    });
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// ------------------------------------------------
 export const getCart = async (id: string) => {
   try {
     const { data } = await api.get(`/cart/${id}`, {
@@ -105,14 +152,13 @@ export const getCart = async (id: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    // console.log(data);
-
     return data.data.cart;
   } catch (error) {
     console.log(error);
   }
 };
 
+// -----------------------------------------------
 // -----------------------------------------------
 // -----------------------------------------------
 
@@ -172,7 +218,6 @@ export const validateCoupon = async (couponData: CouponType) => {
 // }
 
 export const getShippingAddress = async () => {
-
   try {
     const { data } = await api.get(`/addresses`);
     // console.log(data);
