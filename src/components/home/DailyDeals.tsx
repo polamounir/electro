@@ -105,7 +105,7 @@ export default function DailyDeals() {
                     {products?.map((product: ProductTypes, index: number) => (
                         <div key={index} className="flex items-center justify-center h-40 pr-5 " aria-hidden={false}>
                             <div className="flex gap-1 h-35 bg-white shadow-md p-3 border border-gray-200 rounded-lg daily-deal-card cursor-auto">
-                                <div className="daily-deal-card-overlay ">
+                                <div className="daily-deal-card-overlay">
                                     <button className="duration-500" onClick={() => addProductToCart(product.id)}><ShoppingCart size={35} strokeWidth={2.5} /></button>
                                 </div>
                                 <div className="overflow-hidden h-full 

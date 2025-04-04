@@ -1,7 +1,17 @@
 import { Car, LucideCheck, LucidePackage } from 'lucide-react';
+import { useEffect } from 'react';
 
 
 export default function CheckoutSuccess() {
+
+    useEffect(() => {
+        const hasReloaded = sessionStorage.getItem("checkout_reloaded");
+
+        if (!hasReloaded) {
+            sessionStorage.setItem("checkout_reloaded", "true");
+            window.location.reload(); 
+        }
+    }, []);
     return (
         <div className="flex justify-center items-center bg-white py-25  px-10">
             <div className="p-5 rounded-lg text-center w-full max-w-2xl">
