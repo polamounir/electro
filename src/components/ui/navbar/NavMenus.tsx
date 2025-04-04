@@ -12,11 +12,7 @@ import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
 import { addToCartAsync, removeFromCartAsync, setProductQuantityAsync } from "@/app/features/slices/cartSlice";
 import { toast } from "sonner";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../../../app/store";
-// import { ProductTypes } from "../../../types";
-// // import { addToCart, removeFromCart } from "../../../app/features/slices/cartSlice";
-// import { toast } from "sonner";
+
 
 interface SideMenuProps {
     classNames: string;

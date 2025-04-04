@@ -33,3 +33,7 @@ a {
 .category-product-card:hover .category-product-image-box-overlay  {
   transform: translateY(0);
 }
+
+header{
+  transition: 1s;
+}

@@ -4,6 +4,7 @@ import ScrollToTopNavigation from "../components/ui/ScrollToTopNavigation";
 import Navbar from "../components/ui/navbar/Navbar";
 import Footer from "../components/ui/Footer";
 import Logout from "@/pages/Logout";
+import CheckoutSuccess from "@/pages/CheckoutSuccess";
 
 // Lazy Loaded Components
 const Home = lazy(() => import("../pages/Home"));
@@ -48,7 +49,7 @@ const AppRoutes = () => {
                     <Route path="/category/*" element={<Category />} />
                     <Route path="/confirm-account/*" element={<AccountConfirmation />} />
                     <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/checkout-success" element={<Checkout />} />
+                    <Route path="/checkout-success" element={<CheckoutSuccess />} />
 
                     <Route path="/profile/*" element={<MyAccount />} />
                     <Route path="/logout" element={<Logout />} />

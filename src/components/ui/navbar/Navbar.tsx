@@ -2,7 +2,7 @@
 // import { useState, useEffect } from "react";
 import { Menu, X, ShoppingCart, Search, PhoneCall, CircleUserRound, MapPinCheck, LogOut } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleCartMenu, toggleSearchMenu, toggleSideMenu } from "../../../app/features/slices/navbarSlice";
+import { closeAllMenus, toggleCartMenu, toggleSearchMenu, toggleSideMenu } from "../../../app/features/slices/navbarSlice";
 
 import "./navbar.css"
 import {
@@ -30,9 +30,9 @@ export default function Navbar() {
     };
 
 
-    // const handleCloseMenu = () => {
-    //     dispatch(closeAllMenus());
-    // }
+    const handleCloseMenu = () => {
+        dispatch(closeAllMenus());
+    }
 
     const [isVisible, setIsVisible] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
@@ -53,7 +53,7 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, [lastScrollY]);
     return (
-        <header className={`sticky ${isVisible ? "top-0" : "-top-8"} left-0 w-full z-50 bg-white duration-300 border-b border-teal-800 shadow-lg shadow-teal-400/15`}>
+        <header className={`sticky ${isVisible ? "top-0" : "-top-24"} left-0 w-full z-50 bg-white duration-300 border-b border-teal-800 shadow-lg shadow-teal-400/15`}>
             <div className="bg-slate-100 text-black px-5 py-2">
                 <div className="flex justify-between items-center">
 
@@ -108,7 +108,7 @@ export default function Navbar() {
                     </div>
                 </div>
             </div>
-            <nav className="h-[60px] flex items-center justify-center border-b shadow-md bg-white" role="navigation" >
+            <nav className="h-[60px] flex items-center justify-center border-b shadow-md bg-white" role="navigation" onBlur={handleCloseMenu}>
                 {/* ----------------- */}
                 <SideMenu classNames={`${isSideMenuOpen ? "show" : "hide"}`} />
                 <CartMenu classNames={`${isCartMenuOpen ? "show" : "hide"}`} />
@@ -147,7 +147,9 @@ export default function Navbar() {
                     </div>
                 </div>
             </nav>
-            <div className="px-5 md:px-10 lg:px-20 py-1 md:py-0  bg-black text-white font-bold">
+            <div className={`${isVisible ? "py-2" : "py-5"} duration-100 px-5 md:px-10 lg:px-20  md:py-0  bg-black text-white font-bold`}
+                onBlur={handleCloseMenu}
+            >
                 <div className="flex md:hidden items-center justify-end ">
                     <button
                         onClick={handleSideMenu}
@@ -164,8 +166,6 @@ export default function Navbar() {
                 </div>
                 <ul
                     id="nav-menu"
-                    // className={`md:flex gap-5 absolute md:static top-20 left-0 w-full shadow-md md:shadow-none p-5 md:p-0 transition-all duration-300 ease-in-out ${isSideMenuOpen ? "block" : "hidden"
-                    //     }`}
                     className={`hidden md:flex items-center justify-center gap-5 w-full shadow-md md:shadow-none transition-all duration-300 ease-in-out uppercase`}
                 >
                     <li className="py-3 relative nav-categories-link">
