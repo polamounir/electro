@@ -152,9 +152,18 @@ export const getCart = async (id: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    // console.log(data);
     return data.data.cart;
   } catch (error) {
-    console.log(error);
+    if (error instanceof AxiosError) {
+      // console.log(error.response?.data);
+      return {
+        code: error.response?.data.status,
+        message: error.response?.data.detail,
+      };
+    }
+
+    // console.log(error);
   }
 };
 

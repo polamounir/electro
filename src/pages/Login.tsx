@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../app/features/slices/authSlice";
 import { toast } from "sonner";
-import { parseJwt } from "../api/user";
+
 
 export default function Login() {
     const [formData, setFormData] = useState({
@@ -16,8 +16,8 @@ export default function Login() {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate()
     const { loading } = useSelector((state: RootState) => state.auth);
-    const user = parseJwt()
-    console.log(user)
+    const user = useSelector((state: RootState) => state.auth.user);
+    // console.log(user)
 
     const [isPasswordShown, setIsPasswordShown] = useState<boolean>(false)
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +52,7 @@ export default function Login() {
         };
     };
 
-    if (user) return <Navigate to="/dashboard" />;
+    if (user) return <Navigate to="/profile" />;
     return (
         <div className="h-[75dvh] flex items-center justify-center bg-gray-100 p-4">
             <div className="bg-white shadow-lg rounded-2xl p-6 md:p-10 w-full max-w-sm border border-gray-200">

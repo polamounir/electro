@@ -141,10 +141,9 @@ export const setProductQuantityAsync = createAsyncThunk<
         message: string;
       } = await changeProductQuantity(productId, cartId, quantity);
 
-    
       if (res.code === 200) {
         toast.success("Quantity updated successfully");
-      }else{
+      } else {
         toast.error(res.message || "Min quantity is 1");
       }
       // Refresh cart after removing item
@@ -177,7 +176,11 @@ const cartSlice = createSlice({
         fetchCartAsync.fulfilled,
         (state, action: PayloadAction<CartType>) => {
           state.status = "succeeded";
-          state.cart = action.payload;
+          if (action.payload && action.payload.cartItems?.length > 0) {
+            state.cart = action.payload;
+          } else {
+            state.cart = initialState.cart;
+          }
           state.error = null;
         }
       )

@@ -88,23 +88,25 @@ export function CartMenu({ classNames }: SideMenuProps) {
                                                 <span>{product.price * product.quantity} EGP</span>
                                             </div>
                                         </div>
-                                        <div className="flex justify-between items-center">
-                                            <button className=" text-center bg-red-700 hover:bg-red-600 text-white rounded duration-300 p-0.5" aria-label="remove product from the cart"
+                                        <div className="flex justify-between items-center gap-1 max-w-full">
+                                            <button className=" text-center bg-red-600 hover:bg-red-500 text-white rounded duration-300 " aria-label="remove product from the cart"
                                                 name="removeProduct"
                                                 onClick={() => handleRemoveProduct(product.id, product.quantity)}
                                             >
                                                 <Minus strokeWidth={1.25} />
                                             </button>
-                                            <input
-                                                type="number"
-                                                name="productQun"
-                                                value={product.quantity}
-                                                onChange={(e) => handleProductQuantity(product.id, parseInt(e.target.value))}
-                                                min={1}
-                                                className=" text-center outline-none font-semibold"
-                                            />
+                                            <div className="max-w-20 flex justify-center items-center">
+                                                <input
+                                                    type="number"
+                                                    name="productQun"
+                                                    value={product.quantity}
+                                                    onChange={(e) => handleProductQuantity(product.id, parseInt(e.target.value))}
+                                                    min={1}
+                                                    className="max-w-full text-center border-none rounded-md focus:outline-none focus:ring-emerald-500"
+                                                />
+                                            </div>
 
-                                            <button className="text-center bg-green-700 hover:bg-green-600 text-white rounded duration-300 p-0.5" aria-label="add product to the cart" name="addProduct"
+                                            <button className="text-center bg-green-600 hover:bg-green-500 text-white rounded duration-300 " aria-label="add product to the cart" name="addProduct"
                                                 onClick={() => addProductToCart(product.id)}
                                             >
                                                 <Plus strokeWidth={1.25} />
