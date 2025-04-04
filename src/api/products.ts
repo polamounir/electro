@@ -6,7 +6,7 @@ const token = Cookies.get("accessToken");
 
 export const fetchDailyDeals = async () => {
   try {
-    const res = await api.get(`/products?page=1&limit=8`);
+    const res = await api.get(`/products?SearchQuery=sam&page=1&limit=8`);
 
     // console.log("Products:", res);
 
@@ -59,6 +59,18 @@ export const fetchCategoryProducts = async () => {
   try {
     const { data } = await api.get(`/products?page=1&limit=20`);
     return data.data.items;
+  } catch (error) {
+    console.error("There has been a problem with your fetch operation:", error);
+    return null;
+  }
+};
+export const fetchProductById = async (id: string) => {
+  try {
+    const { data } = await api.get(`/products/${id}`);
+
+    // console.log("Product:", data);
+
+    return data.data;
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
     return null;

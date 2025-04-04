@@ -5,6 +5,8 @@ import Navbar from "../components/ui/navbar/Navbar";
 import Footer from "../components/ui/Footer";
 import Logout from "@/pages/Logout";
 import CheckoutSuccess from "@/pages/CheckoutSuccess";
+import Loader from "@/components/ui/Loader";
+import Tester from "@/pages/Tester";
 
 // Lazy Loaded Components
 const Home = lazy(() => import("../pages/Home"));
@@ -18,7 +20,7 @@ const Checkout = lazy(() => import("../pages/Checkout"));
 const Category = lazy(() => import("../pages/Category"));
 // const Dashboard = lazy(() => import("../pages/Dashboard"));
 
-const Loading = () => <div>Loading...</div>;
+const Loading = () => <Loader />;
 
 // const Layout = ({ children }: { children: React.ReactNode }) => {
 //     const location = useLocation();
@@ -55,10 +57,11 @@ const AppRoutes = () => {
                     <Route path="/logout" element={<Logout />} />
                     {/* <Route path="/dashboard/*" element={<Dashboard />} /> */}
                     {/* <Route path="/forbidden" element={<Forbidden />} /> */}
+                    <Route path="/test" element={<Tester />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
+                <Footer />
             </Suspense>
-            <Footer />
 
         </Router>
     );

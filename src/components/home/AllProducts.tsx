@@ -50,7 +50,7 @@ export default function AllProducts() {
 
                     {Array.isArray(products) && products.map((product, i) => (
                         <div
-                            className="product  p-2 py-5 rounded-md border border-gray-200 overflow-hidden"
+                            className="product p-2 py-5 rounded-md border border-gray-200 overflow-hidden"
                             key={product.id || i}
                         >
 
