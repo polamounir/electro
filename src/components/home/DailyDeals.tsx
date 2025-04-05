@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../app/store";
 import { addToCartAsync } from "../../app/features/slices/cartSlice";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 export default function DailyDeals() {
     const settings = {
@@ -119,7 +120,7 @@ export default function DailyDeals() {
                                         height={80}
                                     />
                                 </div>
-                                <div className="px-2 w-full  flex flex-col items-start justify-between py-5">
+                                <Link to={`/product/${product?.id}`} className="px-2 w-full  flex flex-col items-start justify-between py-5">
                                     <h2 className="text-">{product.title?.slice(0, 25)}...</h2>
                                     <div className="flex items-center gap-3 text-sm">
                                         <span className="line-through text-red-600">
@@ -129,7 +130,7 @@ export default function DailyDeals() {
                                             {(product.price - 0.05 * product.price).toFixed(2)} EGP
                                         </span>
                                     </div>
-                                </div>
+                                </Link>
                             </div>
                         </div>
                     ))}

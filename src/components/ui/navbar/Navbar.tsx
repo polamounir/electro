@@ -53,15 +53,15 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, [lastScrollY]);
     return (
-        <header className={`sticky ${isVisible ? "top-0" : "-top-24"} left-0 w-full z-50 bg-white duration-300 border-b border-teal-800 shadow-lg shadow-teal-400/15`}>
-            <div className="bg-slate-100 text-black px-5 py-2">
+        <header className={`sticky ${isVisible ? "top-0" : "-top-20 lg:-top-18"} left-0 w-full z-50 bg-white duration-300 border-b border-teal-800 shadow-lg shadow-teal-400/15`}>
+            <div className="bg-slate-100 text-black px-5 py-1">
                 <div className="flex justify-between items-center">
 
                     {
                         user ? (
-                            <div className="logged-account-box relative py-1 text-xl pe-10 px-2">
+                            <div className="logged-account-box relative pe-10 px-2">
                                 <button className="logged-account-box-name font-semibold capitalize" >
-                                    Hi , {user.fullName}
+                                    Hi , {user?.fullName}
                                 </button>
                                 <div className="logged-account-content-box absolute start-0 top-full bg-gray-200 rounded border-gray-300 ">
 
@@ -129,7 +129,7 @@ export default function Navbar() {
 
                     {/* Navigation Links */}
                     <div className="hidden grow border border-teal-600 rounded-full md:flex justify-between overflow-hidden">
-                        <input type="text" className="grow px-3 py-1 outline-0" />
+                        <input type="text" className="grow px-5 py-1 outline-0 text-md" />
                         <button className="px-5 bg-teal-600 text-white ">Search</button>
                     </div>
 
@@ -147,7 +147,7 @@ export default function Navbar() {
                     </div>
                 </div>
             </nav>
-            <div className={`${isVisible ? "py-2" : "py-5"} duration-100 px-5 md:px-10 lg:px-20  md:py-0  bg-black text-white font-bold`}
+            <div className={`${isVisible ? "py-1" : "py-2"} duration-100 px-5 md:px-10 lg:px-20  md:py-0  bg-black text-white font-bold`}
                 onBlur={handleCloseMenu}
             >
                 <div className="flex md:hidden items-center justify-end ">
@@ -168,7 +168,7 @@ export default function Navbar() {
                     id="nav-menu"
                     className={`hidden md:flex items-center justify-center gap-5 w-full shadow-md md:shadow-none transition-all duration-300 ease-in-out uppercase`}
                 >
-                    <li className="py-3 relative nav-categories-link">
+                    <li className="py-2 relative nav-categories-link text-sm">
                         <button className="uppercase">Categories ▼</button>
                         <div className="nav-categories-box absolute z-[1]  top-[100%] left-[0] bg-white rounded-md shadow-md text-black ">
                             <div className="nav-categories-content">

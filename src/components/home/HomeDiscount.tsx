@@ -1,17 +1,11 @@
 
-// import { fetchProducts } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
-// import { Eye, Heart, ShoppingCart } from "lucide-react";
 
-
-// import { useDispatch } from "react-redux";
 
 import { Link } from "react-router-dom";
 import ProductCardSkeleton from "../ui/ProductCardSkeleton";
-// import { openProductModel } from "../../app/features/slices/productModelSlice";
+
 import { fetchDiscountProducts } from "../../api/products";
-
-
 
 export default function HomeDiscount() {
     // const dispatch = useDispatch()
@@ -20,8 +14,6 @@ export default function HomeDiscount() {
     //     dispatch(openProductModel(id))
 
     // }
-
-
 
     const { data: products, isLoading, isError, } = useQuery({
         queryKey: ["products", "discountProducts"],
@@ -48,7 +40,7 @@ export default function HomeDiscount() {
 
                         Array.isArray(products) && products.map((product, i) => (
 
-                            <div className="product p-2 py-5 rounded-md border-2 border-solid border-[#eee] overflow-hidden relative" key={i}>
+                            <Link to={`/product/${product.id}`} className="product p-2 py-5 rounded-md border-2 border-solid border-[#eee] overflow-hidden relative" key={i}>
                                 <div className="upper shadow-2xl flex justify-between absolute top-3 -left-7 -rotate-45 z-10">
                                     <span className="bg-red-500 text-white font-medium px-10">-1%</span>
                                     <i className="far fa-heart"></i>
@@ -71,7 +63,7 @@ export default function HomeDiscount() {
                                         <p className="new text-red-500 font-bold">{product.price} EGP</p>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         ))
                     }
                     {

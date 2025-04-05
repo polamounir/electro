@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { openProductModel } from "../../app/features/slices/productModelSlice";
 import { addToCartAsync } from "../../app/features/slices/cartSlice";
 import { AppDispatch } from "../../app/store";
+import { Link } from "react-router-dom";
 
 
 export default function AllProducts() {
@@ -39,7 +40,7 @@ export default function AllProducts() {
                             key={product.id || i}
                         >
 
-                            <div className="h-25 md:h-50 overflow-hidden">
+                            <Link to={`/product/${product.id}`} className="h-25 md:h-50 overflow-hidden">
 
                                 {/* Product Image */}
                                 <img
@@ -48,7 +49,7 @@ export default function AllProducts() {
                                     className="h-25 md:h-40 max-w-full mx-auto"
 
                                 />
-                            </div>
+                            </Link>
 
                             {/* Buttons */}
                             <div className="my-3 p-3 px-5  border-t border-b border-gray-200 ">
@@ -71,7 +72,7 @@ export default function AllProducts() {
                             </div>
 
                             {/* Product Details */}
-                            <div className="text-center text-xs md:text-sm">
+                            <Link to={`/product/${product.id}`} className="text-center text-xs md:text-sm">
                                 {/* <h3 className="text-gray-400">{product.categoryId}</h3> */}
                                 <div className="w-full px-3 overflow-hidden">
                                     <p className=" font-bold text-ellipsis text-nowrap">{product.title}</p>
@@ -80,7 +81,7 @@ export default function AllProducts() {
                                     {/* <p className="old line-through text-gray-400">${product.originalPrice}</p> */}
                                     <p className="new font-bold text-gray-500">${product.price}</p>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
                     ))}
 

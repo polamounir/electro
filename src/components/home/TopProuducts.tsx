@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
 import { openProductModel } from "@/app/features/slices/productModelSlice";
 import { addToCartAsync } from "@/app/features/slices/cartSlice";
+import { Link } from "react-router-dom";
 
 export default function TopProducts() {
   const dispatch = useDispatch<AppDispatch>();
@@ -154,7 +155,7 @@ export default function TopProducts() {
                 {Array.isArray(products) &&
                   products.map((product: ProductTypes) => (
                     <div
-                      key={product.id}
+                      key={product?.id}
                       className="flex items-center justify-center pr-2"
                       aria-hidden={false}
                     >
@@ -189,7 +190,7 @@ export default function TopProducts() {
                             </div>
                           </div>
                         </div>
-                        <div className="px-2 w-full flex flex-col items-center text-center min-h-20">
+                        <Link to={`/product/${product?.id}`} className="px-2 w-full flex flex-col items-center text-center min-h-20">
                           <h2 className="text-sm text-nowrap text-ellipsis max-w-[90%] overflow-hidden mx-auto">
                             {product.title}
                           </h2>
@@ -201,7 +202,7 @@ export default function TopProducts() {
                               EGP
                             </span>
                           </div>
-                        </div>
+                        </Link>
                       </div>
                     </div>
                   ))}
