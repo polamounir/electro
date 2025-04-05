@@ -218,13 +218,13 @@ export default function Navbar() {
                                         <h2 className="border-b mb-2">Laptops</h2>
                                         <ul>
                                             <li>
-                                                <Link to="/laptops">All</Link>
+                                                <Link to="/category?category=laptops&brand=all">All</Link>
                                             </li>
                                             <li>
-                                                <Link to="/laptops/mac">Mac</Link>
+                                                <Link to="/category?category=laptops&brand=mac">Mac</Link>
                                             </li>
                                             <li>
-                                                <Link to="/laptops/asus">Asus</Link>
+                                                <Link to="/category?category=laptops&brand=asus">Asus</Link>
                                             </li>
                                         </ul>
                                     </div>
@@ -232,27 +232,27 @@ export default function Navbar() {
                                         <h2 className="border-b mb-2">Mobiles</h2>
                                         <ul>
                                             <li>
-                                                <Link to="/laptops">All</Link>
+                                                <Link to="/category?category=mobile&brand=all">All</Link>
                                             </li>
                                             <li>
-                                                <Link to="/laptops/mac">Mac</Link>
+                                                <Link to="/category?category=mobile&brand=">IPhone</Link>
                                             </li>
                                             <li>
-                                                <Link to="/laptops/asus">Asus</Link>
+                                                <Link to="/category?category=mobile&brand=samsung">Samsung</Link>
                                             </li>
                                         </ul>
                                     </div>
                                     <div>
-                                        <h2 className="border-b mb-2">Desktops</h2>
+                                        <h2 className="border-b mb-2">Accessories</h2>
                                         <ul>
                                             <li>
-                                                <Link to="/laptops">All</Link>
+                                                <Link to="/category?category=accessories&brand=all">All</Link>
                                             </li>
                                             <li>
-                                                <Link to="/laptops/mac">Mac</Link>
+                                                <Link to="/category?category=accessories&brand=">SanDisk</Link>
                                             </li>
                                             <li>
-                                                <Link to="/laptops/asus">Asus</Link>
+                                                <Link to="/category?category=accessories&brand=kingstone">Kingstone</Link>
                                             </li>
                                         </ul>
                                     </div>
