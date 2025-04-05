@@ -202,10 +202,10 @@ export function SearchMenu({ classNames }: SideMenuProps) {
                     </form>
 
                 </div>
-                <div className="mt-5 flex flex-col justify-between items-center lg:h-[70dvh]">
+                <div className="mt-5 flex flex-col justify-between items-center h-[75dvh] overflow-y-auto">
                     {
                         searchResults.length > 0 &&
-                        <div className="flex flex-col gap-2  overflow-y-auto">
+                        <div className="flex flex-col gap-2 overflow-y-auto">
                             {
                                 searchResults.map((product: { id: string, title: string, images: string[], price: number }) => (
                                     <Link to={`/product/${product.id}`} key={product?.id} className="flex flex-col justify-center gap-2 border border-gray-200 p-2 rounded-xl shadow-lg">
