@@ -53,14 +53,14 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, [lastScrollY]);
     return (
-        <header className={`sticky ${isVisible ? "top-0" : "-top-20 lg:-top-18"} left-0 w-full z-50 bg-white duration-300 border-b border-teal-800 shadow-lg shadow-teal-400/15`}>
+        <header className={`sticky ${isVisible ? "top-0" : "-top-22 lg:-top-20"} left-0 w-full z-50 bg-white duration-300 border-b border-teal-800 shadow-lg shadow-teal-400/15`}>
             <div className="bg-slate-100 text-black px-5 py-1">
                 <div className="flex justify-between items-center">
 
                     {
                         user ? (
                             <div className="logged-account-box relative pe-10 px-2">
-                                <button className="logged-account-box-name font-semibold capitalize" >
+                                <button className="logged-account-box-name capitalize" >
                                     Hi , {user?.fullName}
                                 </button>
                                 <div className="logged-account-content-box absolute start-0 top-full bg-gray-200 rounded border-gray-300 ">
