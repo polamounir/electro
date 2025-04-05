@@ -232,7 +232,7 @@ export function SearchMenu({ classNames }: SideMenuProps) {
                 {
                     searchResults?.length >= 1 &&
                     <div className="mt-3 text-center">
-                        <Link to="/search" className="text-teal-600 px-2 capitalize py-2 hover:bg-gray-100 hover:shadow-xl rounded-lg duration-300">
+                            <Link to={`/search?query=${searchTerm}`}  className="text-teal-600 px-2 capitalize py-2 hover:bg-gray-100 hover:shadow-xl rounded-lg duration-300">
                             view all
                         </Link>
                     </div>

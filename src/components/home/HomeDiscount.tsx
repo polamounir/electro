@@ -42,7 +42,7 @@ export default function HomeDiscount() {
 
                             <Link to={`/product/${product?.id}`} className="product p-2 py-5 rounded-md border-2 border-solid border-[#eee] overflow-hidden relative" key={i}>
                                 <div className="upper shadow-2xl flex justify-between absolute top-3 -left-7 -rotate-45 z-10">
-                                    <span className="bg-red-500 text-white font-medium px-10"></span>
+                                    <span className="text-xs bg-red-500 text-white font-medium px-10">5%</span>
                                     <i className="far fa-heart"></i>
                                 </div>
                                 <div className="h-25 md:h-30 overflow-hidden">
