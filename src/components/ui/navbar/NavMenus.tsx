@@ -309,20 +309,29 @@ export function SideMenu({ classNames }: SideMenuProps) {
                                 <ul className="subcat-box">
                                     <li>
                                         <Link
-                                            to="#"
+                                            to="/category?category=laptops"
                                             onClick={() => dispatch(closeAllMenus())}
                                             className="block px-6 py-3 text-xs text-gray-700 hover:text-gray-900"
                                         >
-                                            Subcategory 1
+                                            Laptops
                                         </Link>
                                     </li>
                                     <li>
                                         <Link
-                                            to="#"
+                                            to="/category?category=mobile"
                                             onClick={() => dispatch(closeAllMenus())}
                                             className="block px-6 py-3 text-xs text-gray-700 hover:text-gray-900"
                                         >
-                                            Subcategory 2
+                                            Mobile
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            to="/category?category=accessories"
+                                            onClick={() => dispatch(closeAllMenus())}
+                                            className="block px-6 py-3 text-xs text-gray-700 hover:text-gray-900"
+                                        >
+                                            Accessories
                                         </Link>
                                     </li>
                                 </ul>
