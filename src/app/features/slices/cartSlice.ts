@@ -90,6 +90,7 @@ export const addToCartAsync = createAsyncThunk<
     console.log("Cart ID:", cartId);
     try {
       await addToCart(productId, cartId);
+      toast.success(`Product Added to Cart!`);
       dispatch(fetchCartAsync());
       return productId;
     } catch (error) {
@@ -113,7 +114,6 @@ export const removeFromCartAsync = createAsyncThunk<
 
       await deleteFromCart(productId, cartId, quantity);
 
-      // Refresh cart after removing item
       dispatch(fetchCartAsync());
 
       return productId;

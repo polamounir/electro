@@ -36,10 +36,33 @@ const navbarSlice = createSlice({
             state.isCartMenuOpen = false;
             state.isSearchMenuOpen = false;
             console.log("allMenus closed");
+        },
+        setSideMenu: (state, action) => {
+            state.isSideMenuOpen = action.payload;
+            state.isCartMenuOpen = false;
+            state.isSearchMenuOpen = false; 
+        },
+        setCartMenu: (state, action) => {
+            state.isCartMenuOpen = action.payload;
+            state.isSideMenuOpen = false;
+            state.isSearchMenuOpen = false; 
+        },
+        setSearchMenu: (state, action) => {
+            state.isSearchMenuOpen = action.payload;
+            state.isSideMenuOpen = false;
+            state.isCartMenuOpen = false;  
         }
     },
 
 });
 
-export const { toggleSideMenu, toggleCartMenu, toggleSearchMenu,closeAllMenus } = navbarSlice.actions;
+export const {
+  toggleSideMenu,
+  toggleCartMenu,
+  toggleSearchMenu,
+  closeAllMenus,
+  setCartMenu,
+  setSideMenu,
+  setSearchMenu
+} = navbarSlice.actions;
 export default navbarSlice.reducer;

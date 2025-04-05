@@ -8,7 +8,7 @@ import MainSlider from "../components/home/MainSlider";
 import TopProuducts from "../components/home/TopProuducts";
 import { RootState } from "../app/store";
 import ProductModel from "../components/home/ProductModel";
-import { getUserData } from "@/api/user";
+
 
 
 
@@ -28,9 +28,9 @@ export default function Home() {
                 <HomeDiscount />
                 <AllProducts />
             </div>
-            <div>
+            {/* <div>
                 <button onClick={() => getUserData()}>FETCH </button>
-            </div>
+            </div> */}
         </div>
     )
 }

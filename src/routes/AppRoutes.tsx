@@ -7,6 +7,9 @@ import Logout from "@/pages/Logout";
 import CheckoutSuccess from "@/pages/CheckoutSuccess";
 import Loader from "@/components/ui/Loader";
 import Tester from "@/pages/Tester";
+import { useDispatch } from "react-redux";
+import { closeAllMenus } from "@/app/features/slices/navbarSlice";
+
 
 // Lazy Loaded Components
 const Home = lazy(() => import("../pages/Home"));
@@ -18,17 +21,15 @@ const MyAccount = lazy(() => import("../pages/MyAccount"));
 const Cart = lazy(() => import("../pages/Cart"));
 const Checkout = lazy(() => import("../pages/Checkout"));
 const Category = lazy(() => import("../pages/Category"));
-// const Dashboard = lazy(() => import("../pages/Dashboard"));
+const Product = lazy(() => import("../pages/Product"));
 
 const Loading = () => <Loader />;
 
 // const Layout = ({ children }: { children: React.ReactNode }) => {
 //     const location = useLocation();
 //     const hideLayout = location.pathname.startsWith("/dashboard"); // Adjust if needed
-
 //     return (
 //         <>
-
 //             {!hideLayout && <Navbar />}
 //             {children}
 //             {!hideLayout && <Footer />}
@@ -37,30 +38,37 @@ const Loading = () => <Loader />;
 // };
 
 const AppRoutes = () => {
+    const dispatch = useDispatch();
+    const handleCloseMenu = () => {
+        dispatch(closeAllMenus());
+    }
     return (
         <Router>
 
             <ScrollToTopNavigation />
             <Navbar />
             <Suspense fallback={<Loading />}>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/category/*" element={<Category />} />
-                    <Route path="/confirm-account/*" element={<AccountConfirmation />} />
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/checkout-success" element={<CheckoutSuccess />} />
+                <div onClick={handleCloseMenu}>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/cart" element={<Cart />} />
+                        <Route path="/category/*" element={<Category />} />
+                        <Route path="/confirm-account/*" element={<AccountConfirmation />} />
+                        <Route path="/checkout" element={<Checkout />} />
+                        <Route path="/checkout-success" element={<CheckoutSuccess />} />
 
-                    <Route path="/profile/*" element={<MyAccount />} />
-                    <Route path="/logout" element={<Logout />} />
-                    {/* <Route path="/dashboard/*" element={<Dashboard />} /> */}
-                    {/* <Route path="/forbidden" element={<Forbidden />} /> */}
-                    <Route path="/test" element={<Tester />} />
-                    <Route path="*" element={<NotFound />} />
-                </Routes>
-                <Footer />
+                        <Route path="/product/:id" element={<Product />} />
+                        <Route path="/profile/*" element={<MyAccount />} />
+                        <Route path="/logout" element={<Logout />} />
+                        {/* <Route path="/dashboard/*" element={<Dashboard />} /> */}
+                        {/* <Route path="/forbidden" element={<Forbidden />} /> */}
+                        <Route path="/test" element={<Tester />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                    <Footer />
+                </div>
             </Suspense>
 
         </Router>

@@ -18,10 +18,10 @@ function App() {
     <>
       <ReduxProvider>
         <QueryClientProvider client={queryClient}>
-          <AppRoutes />
           <AppInitializer />
           <Toaster position="top-right" richColors={true} closeButton={true} />
           <ScrollToTop />
+          <AppRoutes />
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ReduxProvider>

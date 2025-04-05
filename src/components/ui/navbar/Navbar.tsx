@@ -108,7 +108,7 @@ export default function Navbar() {
                     </div>
                 </div>
             </div>
-            <nav className="h-[60px] flex items-center justify-center border-b shadow-md bg-white" role="navigation" onBlur={handleCloseMenu}>
+            <nav className="h-[60px] flex items-center justify-center border-b shadow-md bg-white" role="navigation" >
                 {/* ----------------- */}
                 <SideMenu classNames={`${isSideMenuOpen ? "show" : "hide"}`} />
                 <CartMenu classNames={`${isCartMenuOpen ? "show" : "hide"}`} />

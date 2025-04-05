@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../app/store";
 import { fetchUser } from "../app/features/slices/authSlice";
 import { useEffect } from "react";
+import { fetchCartAsync } from "@/app/features/slices/cartSlice";
 
 
 const AppInitializer = () => {
@@ -9,6 +10,7 @@ const AppInitializer = () => {
 
     useEffect(() => {
         dispatch(fetchUser());
+        dispatch(fetchCartAsync())
     }, [dispatch]);
 
 

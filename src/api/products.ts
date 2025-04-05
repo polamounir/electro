@@ -64,12 +64,20 @@ export const fetchCategoryProducts = async () => {
     return null;
   }
 };
+export const fetchSearchProducts = async (searchTerm: string) => {
+  try {
+    const { data } = await api.get(
+      `/products?SearchQuery=${searchTerm}&page=1&limit=20`
+    );
+    return data.data.items;
+  } catch (error) {
+    console.error("There has been a problem with your fetch operation:", error);
+    return null;
+  }
+};
 export const fetchProductById = async (id: string) => {
   try {
     const { data } = await api.get(`/products/${id}`);
-
-    // console.log("Product:", data);
-
     return data.data;
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);

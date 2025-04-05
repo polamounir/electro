@@ -1,8 +1,9 @@
 import { ChevronRight, Minimize2, Minus, Plus } from "lucide-react";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     closeAllMenus,
+    setCartMenu,
     toggleCartMenu,
     toggleSearchMenu,
     toggleSideMenu,
@@ -11,7 +12,8 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
 import { addToCartAsync, removeFromCartAsync, setProductQuantityAsync } from "@/app/features/slices/cartSlice";
-import { toast } from "sonner";
+import { fetchSearchProducts } from "@/api/products";
+
 
 
 interface SideMenuProps {
@@ -26,7 +28,6 @@ export function CartMenu({ classNames }: SideMenuProps) {
     // console.log(cart)
     const addProductToCart = (id: string) => {
         dispatch(addToCartAsync(id));
-        toast.success(`Product Added !`);
     }
 
     const handleProductQuantity = (id: string, qun: number) => {
@@ -43,6 +44,7 @@ export function CartMenu({ classNames }: SideMenuProps) {
             role="dialog"
             aria-labelledby="cart-menu-title"
             aria-modal="true"
+            onFocus={() => dispatch(setCartMenu(true))}
         >
             <div className="relative p-2 pt-15 h-full">
                 <button
@@ -136,6 +138,27 @@ export function CartMenu({ classNames }: SideMenuProps) {
 export function SearchMenu({ classNames }: SideMenuProps) {
     const dispatch = useDispatch();
     const handleCloseSideMenu = () => dispatch(toggleSearchMenu());
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const res = await fetchSearchProducts(searchTerm);
+        console.log(res);
+        setSearchResults(res);
+    }
+    const searchProducts = async () => {
+        const res = await fetchSearchProducts(searchTerm);
+        setSearchResults(res);
+    }
+
+    useEffect(() => {
+        if (searchTerm.length > 0) {
+            searchProducts()
+        } else {
+            setSearchResults([])
+        }
+    }, [searchTerm])
     return (
         <div
             className={`nav-search-menu ${classNames} duration-300 w-xs sm:w-sm lg:w-md`}
@@ -157,23 +180,62 @@ export function SearchMenu({ classNames }: SideMenuProps) {
                 </h2>
                 <div>
                     {/* Search form */}
-                    <form className="flex flex-col gap-4 ">
+                    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                         <input
                             type="text"
                             className="w-full py-2 px-4 text-sm border rounded-md focus:outline-none focus:ring-emerald-500"
                             placeholder="Search..."
                             name="searchInput"
                             aria-label="search input field"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            autoFocus={true}
                         />
                         <button
                             className="bg-emerald-600 hover:bg-emerald-500 text-white rounded-md duration-300 px-4 py-2"
                             aria-label="search submission button"
                             name="searchSubmit"
+                            type="submit"
                         >
                             Search
                         </button>
                     </form>
-                    {/* Categories */}
+
+                </div>
+                <div className="mt-5 flex flex-col justify-between items-center lg:h-[70dvh]">
+                    {
+                        searchResults.length > 0 &&
+                        <div className="flex flex-col gap-2  overflow-y-auto">
+                            {
+                                searchResults.map((product: { id: string, title: string, images: string[], price: number }) => (
+                                    <Link to={`/product/${product.id}`} key={product?.id} className="flex flex-col justify-center gap-2 border border-gray-200 p-2 rounded-xl shadow-lg">
+                                        <div className="flex items-center gap-3 h-28">
+                                            <div className="min-w-25 max-w-25 flex justify-center">
+                                                <img src={product.images[0]} alt={product.title} className="h-22" />
+                                            </div>
+                                            <div className="text-sm max-h-22 overflow-ellipsis">
+                                                <h2>{product.title}</h2>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                ))
+                            }
+                        </div>
+                    }
+                    {
+                        searchResults.length >= 1 &&
+                        <div className="mt-3">
+                            <Link to="/search" className="text-teal-600 px-2 capitalize py-2 hover:bg-gray-100 hover:shadow-xl rounded-lg duration-300">
+                                view all
+                            </Link>
+                        </div>
+                    }
+                    {
+                        searchResults.length === 0 &&
+                        <div className="flex flex-col gap-2">
+                            <h2>No results found</h2>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

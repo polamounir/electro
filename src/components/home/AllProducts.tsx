@@ -1,24 +1,16 @@
 
-
-
 import { Eye, Heart, ShoppingCart } from "lucide-react";
 import { useDispatch } from "react-redux";
-
-// import { useState } from "react";
-
 import ProductCardSkeleton from "../ui/ProductCardSkeleton";
 import { fetchHomeProducts } from "../../api/products";
 import { useQuery } from "@tanstack/react-query";
 import { openProductModel } from "../../app/features/slices/productModelSlice";
-// import { addToCart, removeFromCart } from "../../app/features/slices/cartSlice";
-import { toast } from "sonner";
 import { addToCartAsync } from "../../app/features/slices/cartSlice";
 import { AppDispatch } from "../../app/store";
 
+
 export default function AllProducts() {
     const dispatch = useDispatch<AppDispatch>()
-
-
 
     const previewProduct = (id: string) => {
         dispatch(openProductModel(id));
@@ -29,16 +21,9 @@ export default function AllProducts() {
         queryFn: () => fetchHomeProducts(),
     });
 
-
     const handleAddProduct = (id: string) => {
         dispatch(addToCartAsync(id))
-        toast.success(`Product Added to Cart!`);
     }
-
-    // const deleteProductToCart = (id: string) => {
-    //     // dispatch(removeFromCart(id));
-    //     toast.success(`Product Removed !`);
-    // }
 
     return (
         <div className="products py-10">
