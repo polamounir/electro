@@ -22,6 +22,7 @@ const Cart = lazy(() => import("../pages/Cart"));
 const Checkout = lazy(() => import("../pages/Checkout"));
 const Category = lazy(() => import("../pages/Category"));
 const Product = lazy(() => import("../pages/Product"));
+const SearchResult = lazy(() => import("../pages/SearchResult"));
 
 const Loading = () => <Loader />;
 
@@ -53,13 +54,14 @@ const AppRoutes = () => {
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
-                        <Route path="/cart" element={<Cart />} />
-                        <Route path="/category/*" element={<Category />} />
                         <Route path="/confirm-account/*" element={<AccountConfirmation />} />
+                        <Route path="/cart" element={<Cart />} />
                         <Route path="/checkout" element={<Checkout />} />
                         <Route path="/checkout-success" element={<CheckoutSuccess />} />
 
+                        <Route path="/category/*" element={<Category />} />
                         <Route path="/product/:id" element={<Product />} />
+                        <Route path="/search/*" element={<SearchResult />} />
                         <Route path="/profile/*" element={<MyAccount />} />
                         <Route path="/logout" element={<Logout />} />
                         {/* <Route path="/dashboard/*" element={<Dashboard />} /> */}

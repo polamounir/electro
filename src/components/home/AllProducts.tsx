@@ -27,10 +27,10 @@ export default function AllProducts() {
     }
 
     return (
-        <div className="products py-10">
+        <div className="products">
             <div className="flex flex-col gap-5">
                 <h2 className="text-xl font-semibold text-gray-800 mb-2">All Products</h2>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1 md:gap-5 overflow-hidden">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-1 md:gap-5 overflow-hidden">
 
                     {isLoading && [...Array(6)].map((_, index) => <ProductCardSkeleton key={index} />)}
 
@@ -40,13 +40,13 @@ export default function AllProducts() {
                             key={product.id || i}
                         >
 
-                            <Link to={`/product/${product.id}`} className="h-25 md:h-50 overflow-hidden">
+                            <Link to={`/product/${product.id}`} className="h-25 md:h-30 overflow-hidden">
 
                                 {/* Product Image */}
                                 <img
                                     src={product.images[0]}
                                     alt={product.title}
-                                    className="h-25 md:h-40 max-w-full mx-auto"
+                                    className="h-25 md:h-20 max-w-full mx-auto"
 
                                 />
                             </Link>
@@ -72,7 +72,7 @@ export default function AllProducts() {
                             </div>
 
                             {/* Product Details */}
-                            <Link to={`/product/${product.id}`} className="text-center text-xs md:text-sm">
+                            <Link to={`/product/${product.id}`} className="text-center text-xs">
                                 {/* <h3 className="text-gray-400">{product.categoryId}</h3> */}
                                 <div className="w-full px-3 overflow-hidden">
                                     <p className=" font-bold text-ellipsis text-nowrap">{product.title}</p>

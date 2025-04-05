@@ -6,7 +6,7 @@ const token = Cookies.get("accessToken");
 
 export const fetchDailyDeals = async () => {
   try {
-    const res = await api.get(`/products?SearchQuery=sam&page=1&limit=8`);
+    const res = await api.get(`/products?SearchQuery=dell&page=1&limit=8`);
 
     // console.log("Products:", res);
 
