@@ -53,7 +53,7 @@ export default function ProductModel() {
             <div className="flex justify-center items-center p-2 ">
                 <div className="w-full max-w-3xl bg-white text-black grid grid-cols-1 md:grid-cols-2 gap-10 px-5 py-10 rounded-md shadow-2xl shadow-teal-300/50 relative" >
                     <button className="bg-gray-100 hover:bg-gray-200 font-extrabold p-5 absolute right-5 top-5 h-10 w-10 flex justify-center items-center rounded-lg" onClick={() => {
-                        console.log("Product")
+                   
                         dispatch(closeProductModel())
                     }}>X</button>
                     <div className="flex flex-col items-center justify-center gap-10">

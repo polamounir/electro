@@ -7,6 +7,8 @@ import { Link, useNavigate } from "react-router-dom"
 import { createOrder, fetchDeliveryMethods, getShippingAddress, validateCoupon } from "../api/products"
 import { toast } from "sonner"
 import { useQuery } from "@tanstack/react-query"
+import { openAddressModel } from "@/app/features/slices/addAddressModelSlice"
+import AddAddressModel from "@/components/checkout/AddAddressModel"
 
 
 
@@ -143,19 +145,26 @@ export default function Checkout() {
 
         try {
             const res = await createOrder(updatedOrder);
-            
-            if (res.isSuccess) {
-                toast.success("Order is being processed.");
-                window.location.href = res.paymentUrl;
-            } else if (res.code === 401) {
-                toast.error(res.message);
+
+            console.log(res)
+            if (res.code === 200) {
+                toast.success("Order is being process/ed.");
+                setTimeout(() => {
+                    window.location.href = res.paymentLink;
+                }, 2000)
+                return;
+            }
+            if (res.code === 401) {
+                toast.error("Please login first!");
                 navigate("/login");
             } else {
-                toast.error(res.message);
+                // toast.error(res.message);
             }
+
         } catch (error) {
+
             console.error("Error during order creation:", error);
-            toast.error("An error occurred while creating the order.");
+            // toast.error("An error occurred while creating the order.");
         }
     };
 
@@ -165,8 +174,16 @@ export default function Checkout() {
         { id: "1", name: "Online", description: "Secure payment processing" },
         { id: "2", name: "Cash", description: "Secure payment processing" },
     ]
+
+
+    // ------------------
+    const isModelOpen = useSelector((state: RootState) => state.addressModel.isOpen)
+    const openAddAddressModal = () => {
+        dispatch(openAddressModel())
+    }
     return (
         <div className="min-h-[75dvh] pb-50">
+            {isModelOpen && <AddAddressModel />}
             {
                 cartItems?.length === 0 &&
                 <div className="flex flex-col gap-5 justify-center items-center h-[60dvh] pb-20">
@@ -182,7 +199,9 @@ export default function Checkout() {
                         <div className="border border-gray-300 rounded-2xl">
                             <div className="p-5 flex justify-between items-center">
                                 <h2 className="font-semibold text-lg">Shipping Address</h2>
-                                <button className="px-3 py-1 font-bold ">Add</button>
+                                <button className="px-3 py-1 font-bold "
+                                    onClick={openAddAddressModal}
+                                >Add</button>
                             </div>
                             <hr className="border-gray-300" />
                             <div className="text-md p-5 flex flex-col gap-2">

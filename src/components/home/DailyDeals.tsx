@@ -86,7 +86,7 @@ export default function DailyDeals() {
     if (isError)
         return <h2 className="text-center p-4"> something went wrong</h2>;
     return (
-        <div className="daily-deals bg-white rounded-lg shadow-lg py-5 px-5 md:px-20 ">
+        <div className="daily-deals bg-white rounded-lg shadow-lg py-5 px-5 md:px-20 select-none">
             <h2 className="text-xl font-semibold text-gray-800 mb-2">Daily Deals</h2>
             {/* {loading && <div className="text-center min-h-35 flex justify-center items-center">Loading...</div>} */}
             <div className="slider-container ">

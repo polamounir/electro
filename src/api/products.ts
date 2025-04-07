@@ -2,6 +2,7 @@ import { AxiosError } from "axios";
 import { api } from "./axiosInstance";
 import Cookies from "js-cookie";
 
+
 const token = Cookies.get("accessToken");
 
 export const fetchDailyDeals = async () => {
@@ -272,18 +273,22 @@ interface OrderDetailTypes {
 export const createOrder = async (data: OrderDetailTypes) => {
   try {
     const res = await api.post(`/orders/create-order`, data);
-    // console.log(res.data);
-    return res.data;
+    console.log(res);
+    return {
+      code: res.status,
+      message: res.data.message,
+      paymentLink: res.data.data.paymentUrl,
+    };
   } catch (error) {
     if (error instanceof AxiosError) {
+      console.log(error.response);
       return {
-        code: error.response?.data.status,
+        code: error.status,
         message: error.response?.data.detail,
       };
 
       // if (error.status === 401) {
-      //   console.log("Unauthorized");
-
+      //   // console.log("Unauthorized");
       //   return { code: 401, message: "Please Login first" };
       // }
 

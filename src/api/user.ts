@@ -34,3 +34,15 @@ export const getUserData = async () => {
     console.error(error);
   }
 };
+
+export const addAddress = async (address: string) => {
+  try {
+    const { data } = await api.post("/addresses", {
+      address,
+    });
+    // console.log(data);
+    return data.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
