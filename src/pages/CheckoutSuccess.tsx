@@ -4,9 +4,10 @@ import { useEffect } from 'react';
 
 export default function CheckoutSuccess() {
 
+
+
     useEffect(() => {
         const hasReloaded = sessionStorage.getItem("checkout_reloaded");
-
         if (!hasReloaded) {
             sessionStorage.setItem("checkout_reloaded", "true");
             window.location.reload(); 

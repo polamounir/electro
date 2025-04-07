@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Suspense, lazy } from "react";
+import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
+import { Suspense, lazy, useEffect } from "react";
 import ScrollToTopNavigation from "../components/ui/ScrollToTopNavigation";
 import Navbar from "../components/ui/navbar/Navbar";
 import Footer from "../components/ui/Footer";
@@ -9,6 +9,7 @@ import Loader from "@/components/ui/Loader";
 import Tester from "@/pages/Tester";
 import { useDispatch } from "react-redux";
 import { closeAllMenus } from "@/app/features/slices/navbarSlice";
+import { useLocation } from "react-router";
 
 
 // Lazy Loaded Components
@@ -40,11 +41,22 @@ const Loading = () => <Loader />;
 
 const AppRoutes = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const redirectPath = params.get("redirect");
+        if (redirectPath) {
+            navigate(`/${redirectPath}`);
+        }
+    }, [location.search]);
+
     const handleCloseMenu = () => {
         dispatch(closeAllMenus());
     }
     return (
-        <Router>
+        <Router basename="/">
 
             <ScrollToTopNavigation />
             <Navbar />
