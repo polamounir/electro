@@ -56,7 +56,7 @@ const AppRoutes = () => {
         dispatch(closeAllMenus());
     }
     return (
-        <Router basename="/">
+        <Router>
 
             <ScrollToTopNavigation />
             <Navbar />
