@@ -15,25 +15,25 @@ export default function AddAddressModel() {
             <form>
               <div className="flex flex-col gap-5">
                 <label htmlFor="name">First Name</label>
-                <input type="text" id="firstName" className="border border-gray-300 p-2 rounded-md" />
+                <input type="text" id="firstName" className="w-full border border-gray-300 p-2 rounded-md" />
               </div>
               <div className="flex flex-col gap-5">
 
                 <label htmlFor="name">Last Name</label>
-                <input type="text" id="lastName" className="border border-gray-300 p-2 rounded-md" />
+                <input type="text" id="lastName" className="w-full border border-gray-300 p-2 rounded-md" />
               </div>
               <div className="flex flex-col gap-5">
 
                 <label htmlFor="name">Street</label>
-                <input type="text" id="street" className="border border-gray-300 p-2 rounded-md" />
+                <input type="text" id="street" className="w-full border border-gray-300 p-2 rounded-md" />
               </div>
               <div className="flex flex-col gap-5">
                 <label htmlFor="name">City</label>
-                <input type="text" id="city" className="border border-gray-300 p-2 rounded-md" />
+                <input type="text" id="city" className="w-full border border-gray-300 p-2 rounded-md" />
               </div>
               <div className="flex flex-col gap-5">
                 <label htmlFor="name">Governorate</label>
-                <input type="text" id="governorate" className="border border-gray-300 p-2 rounded-md" />
+                <input type="text" id="governorate" className="w-full border border-gray-300 p-2 rounded-md" />
               </div>
             </form>
           </div>
