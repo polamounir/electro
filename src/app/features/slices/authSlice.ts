@@ -17,11 +17,12 @@ interface LoginUserResponse {
   email: string;
   accessToken: string;
 }
-
-interface RegisterUserResponse {
+interface RegisterUserResponseData {
   userName: string;
   userId: string;
-  name?: string;
+}
+interface RegisterUserResponse {
+  data: RegisterUserResponseData;
 }
 
 interface AuthState {
@@ -51,14 +52,10 @@ const saveAuthData = (token: string, email: string): void => {
   Cookies.set(EMAIL_KEY, email);
 };
 
-const saveUserData = (
-  userId: string,
-  userName: string,
-  fullName: string
-): void => {
+const saveUserData = (userId: string, userName: string): void => {
+  console.log("userData", userId, userName);
   localStorage.setItem(USER_ID_KEY, userId);
   localStorage.setItem(USER_NAME_KEY, userName);
-  localStorage.setItem(FULL_NAME_KEY, fullName);
 };
 
 const clearAuthData = (): void => {
@@ -152,7 +149,7 @@ export const fetchUser = createAsyncThunk<
 
 // Register user thunk
 export const registerUser = createAsyncThunk<
-  RegisterUserResponse,
+  RegisterUserResponseData,
   RegisterUserPayload,
   { rejectValue: string }
 >("auth/registerUser", async (userData, { rejectWithValue }) => {
@@ -161,9 +158,10 @@ export const registerUser = createAsyncThunk<
       "/auth/register",
       userData
     );
-
-    const { userId, userName } = response.data;
-    saveUserData(userId, userName, userData.fullName);
+    console.log("response", response);
+    const { data } = response.data;
+    const { userId, userName } = data;
+    saveUserData(userId, userName);
 
     return { userId, userName, name: userData.fullName };
   } catch (error) {
@@ -189,8 +187,8 @@ export const registerUser = createAsyncThunk<
 // Logout user thunk
 export const logoutUser = createAsyncThunk("auth/logout", async () => {
   clearAuthData();
-        localStorage.removeItem("cartInitID");
-        localStorage.removeItem("cart");
+  localStorage.removeItem("cartInitID");
+  localStorage.removeItem("cart");
   return null;
 });
 
@@ -200,7 +198,6 @@ const authSlice = createSlice({
   reducers: {
     clearErrors: (state) => {
       state.error = null;
-
     },
   },
   extraReducers: (builder) => {

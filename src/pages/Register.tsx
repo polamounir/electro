@@ -28,7 +28,6 @@ export default function Register() {
     const { loading } = useSelector((state: RootState) => state.auth);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
         setFormData({ ...formData, [e.target.name]: e.target.value });
         console.log(formData)
     };
@@ -36,10 +35,15 @@ export default function Register() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        if (formData.password !== confirmPassword) {
+            toast.error("Passwords do not match");
+            return; 
+        }
         try {
             const res = await dispatch(registerUser(formData)).unwrap();
             toast.success("Account created successfully!");
-            navigate(`/confirm-account?uid=${res.userId}&name=${res.name}&email=${res.userName}`);
+            console.log(res)
+            navigate(`/confirm-account`);
         } catch (err: unknown) {
             console.error("Registration failed:", err);
             let errorMessage = "An unknown error occurred";
@@ -149,13 +153,7 @@ export default function Register() {
                                     {isConfirmPasswordShown ? <EyeOff /> : <Eye />}
                                 </button>
                             </div>
-                            <div>
-                                {
-                                    confirmPassword !== formData.password && confirmPassword.length > 0 && (
-                                        <div className="text-red-500 text-sm">Passwords do not match</div>
-                                    )
-                                }
-                            </div>
+                            
                         </div>
 
                         {/* Submit Button */}

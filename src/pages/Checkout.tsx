@@ -190,180 +190,183 @@ export default function Checkout() {
                     <h2 className="font-bold text-3xl">Your Cart is Empty</h2>
                     <Link to="/" className="px-5 py-2 font-bold bg-teal-500 text-white rounded-md">Go to Shop</Link>
                 </div>
-            }
-            <div className="p-2 pt-5 md:p-10 xl:px-40 flex flex-col gap-5">
-                <h2 className="font-bold text-xl">Order Details</h2>
-                <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start ">
+            }{
 
-                    <div className="lg:col-span-3 flex flex-col gap-5 text-xs md:text-sm lg:text-md">
-                        <div className="border border-gray-300 rounded-2xl">
-                            <div className="p-5 flex justify-between items-center">
-                                <h2 className="font-semibold text-lg">Shipping Address</h2>
-                                <button className="px-3 py-1 font-bold "
-                                    onClick={openAddAddressModal}
-                                >Add</button>
-                            </div>
-                            <hr className="border-gray-300" />
-                            <div className="text-md p-5 flex flex-col gap-2">
-                                {
-                                    addressesLoading && <div><h2>Loading Address ...</h2> </div>
-                                }
-                                {
-                                    addressesError && <div><h2>Error Loading Address...</h2> </div>
-                                }
-                                {addresses && addresses.length > 0 && Array(addresses).map((option: AddressType, index: number) => (
-                                    <label
-                                        key={option?.id}
-                                        className=" p-3 flex justify- w-full items-center rounded-lg border border-transparent cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold "
-                                    >
-                                        <div className="relative z-10 ">
-                                            <div className="flex flex-col gap-2 w-full">
+                cartItems?.length > 0 &&
+                <div className="p-2 pt-5 md:p-10 xl:px-40 flex flex-col gap-5">
+                    <h2 className="font-bold text-xl">Order Details</h2>
+                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start ">
 
-                                                <h2>{option.firstName} {option.lastName}</h2>
-                                                <div>
+                        <div className="lg:col-span-3 flex flex-col gap-5 text-xs md:text-sm lg:text-md">
+                            <div className="border border-gray-300 rounded-2xl">
+                                <div className="p-5 flex justify-between items-center">
+                                    <h2 className="font-semibold text-lg">Shipping Address</h2>
+                                    <button className="px-3 py-1 font-bold "
+                                        onClick={openAddAddressModal}
+                                    >Add</button>
+                                </div>
+                                <hr className="border-gray-300" />
+                                <div className="text-md p-5 flex flex-col gap-2">
+                                    {
+                                        addressesLoading && <div><h2>Loading Address ...</h2> </div>
+                                    }
+                                    {
+                                        addressesError && <div><h2>Error Loading Address...</h2> </div>
+                                    }
+                                    {addresses && addresses.length > 0 && Array(addresses).map((option: AddressType, index: number) => (
+                                        <label
+                                            key={option?.id}
+                                            className=" p-3 flex justify- w-full items-center rounded-lg border border-transparent cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold "
+                                        >
+                                            <div className="relative z-10 ">
+                                                <div className="flex flex-col gap-2 w-full">
 
-                                                    <h2>Address</h2>
-                                                    <h2>{option.street}</h2>
-                                                    <h2>{option.city}</h2>
-                                                    <h2>{option.governorate}</h2>
+                                                    <h2>{option.firstName} {option.lastName}</h2>
+                                                    <div>
+
+                                                        <h2>Address</h2>
+                                                        <h2>{option.street}</h2>
+                                                        <h2>{option.city}</h2>
+                                                        <h2>{option.governorate}</h2>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <input
-                                            type="radio"
-                                            name="address"
-                                            value={option.id}
-                                            className="hidden"
-                                            checked={addresses.length === 1 && index === 0}
-                                            onChange={handleAddressChange}
-                                        />
-                                    </label>
-                                ))}
+                                            <input
+                                                type="radio"
+                                                name="address"
+                                                value={option.id}
+                                                className="hidden"
+                                                checked={addresses.length === 1 && index === 0}
+                                                onChange={handleAddressChange}
+                                            />
+                                        </label>
+                                    ))}
 
-                            </div>
-                        </div>
-                        <div className="border border-gray-300 rounded-2xl">
-                            <div className="p-5 flex justify-between items-center">
-                                <h2 className="font-semibold text-lg">Order Items</h2>
-                                <Link to="/cart" className="px-3 py-1 font-bold ">Edit</Link>
-                            </div>
-                            <hr className="border-gray-300" />
-                            <div className="text-md p-5 flex flex-col gap-3">
-                                {
-                                    cartItems?.map(item => (
-                                        <div key={item.id} className="flex items-center gap-5 ">
-                                            <div className="flex justify-center bg-red self-center min-w-15 max-w-15 md:min-w-20 md:max-w-20 h-20">
-                                                <img src={item.imageUrl} alt="" className=" object-contain" />
-                                            </div>
-                                            <div className="grow">
-                                                <h2 className="">{item.title}</h2>
-                                                <h2 className="">{item.price} EGP</h2>
-                                                <h2 className="font-semibold">{item.quantity} x {item.price} = {item.quantity * item.price} EGP</h2>
-                                            </div>
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                        </div>
-                        <div className="border border-gray-300 rounded-2xl">
-                            <div className="p-5 flex justify-between items-center">
-                                <h2 className="font-semibold text-lg">Payment Method</h2>
-
-                            </div>
-                            <hr className="border-gray-300" />
-                            <div className="text-md p-5 text-black flex flex-col gap-3">
-
-                                {paymentMethods?.map((option) => (
-                                    <label
-                                        key={option.id}
-                                        className=" p-3 flex justify- w-full items-center rounded-lg border border-transparent cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold"
-                                    >
-                                        <div className="relative z-10 inline-flex items-center justify-center gap-2 w-full">
-                                            <p className=" inset-0 w-full ">
-                                                {option.name}
-                                            </p>
-                                        </div>
-                                        <input
-                                            type="radio"
-                                            name="paymentMethod"
-                                            value={option.name}
-                                            className="hidden"
-                                            checked={orderDetail.paymentMethod === option.name}
-                                            onChange={handlePaymentMethodChange}
-                                        />
-                                    </label>
-                                ))}
-
-                            </div>
-                        </div>
-                        <div className="border border-gray-300 rounded-2xl">
-                            <div className="p-5 flex justify-between items-center">
-                                <h2 className="font-semibold text-lg">Delivery Method</h2>
-
-                            </div>
-                            <hr className="border-gray-300" />
-                            <div className="text-md p-5 text-black flex flex-col gap-3">
-                                {deliveryMethods?.map((option: DeliveryMethodTypes) => (
-                                    <label
-                                        key={option.id}
-                                        className=" p-3 flex justify- w-full items-center rounded-lg border border-transparent cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold"
-                                    >
-                                        <div className="relative z-10 inline-flex items-center justify-center gap-2 w-full">
-                                            <p className=" inset-0 w-full ">
-                                                {option.name}
-                                            </p>
-                                        </div>
-                                        <input
-                                            type="radio"
-                                            name="deliveryMethod"
-                                            value={option.id}
-                                            className="hidden"
-                                            checked={orderDetail.deliveryMethod === option.id}
-                                            onChange={handleDeliveryMethodChange}
-                                        />
-                                    </label>
-                                ))}
-
-                            </div>
-                        </div>
-
-
-                    </div>
-                    <div className="lg:col-span-2 p-10 flex flex-col gap-5 border border-gray-300 rounded-2xl">
-                        <h2 className="font-bold text-lg">Order Summary </h2>
-                        <div>
-                            <div className="flex flex-col gap-1">
-                                <div className="flex items-center justify-between">
-                                    <h2 className="text-gray-400">Subtotal</h2>
-                                    <h2 className="">{subTotal - shippingPrice} EGP</h2>
                                 </div>
-                                <div className="flex items-center justify-between">
-                                    <h2 className="text-gray-400">Delivery Fee</h2>
-                                    <h2 className=""> {shippingPrice} EGP</h2>
+                            </div>
+                            <div className="border border-gray-300 rounded-2xl">
+                                <div className="p-5 flex justify-between items-center">
+                                    <h2 className="font-semibold text-lg">Order Items</h2>
+                                    <Link to="/cart" className="px-3 py-1 font-bold ">Edit</Link>
                                 </div>
-                                {couponDetails.discountValue > 0 &&
+                                <hr className="border-gray-300" />
+                                <div className="text-md p-5 flex flex-col gap-3">
+                                    {
+                                        cartItems?.map(item => (
+                                            <div key={item.id} className="flex items-center gap-5 ">
+                                                <div className="flex justify-center bg-red self-center min-w-15 max-w-15 md:min-w-20 md:max-w-20 h-20">
+                                                    <img src={item.imageUrl} alt="" className=" object-contain" />
+                                                </div>
+                                                <div className="grow">
+                                                    <h2 className="">{item.title}</h2>
+                                                    <h2 className="">{item.price} EGP</h2>
+                                                    <h2 className="font-semibold">{item.quantity} x {item.price} = {item.quantity * item.price} EGP</h2>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </div>
+                            <div className="border border-gray-300 rounded-2xl">
+                                <div className="p-5 flex justify-between items-center">
+                                    <h2 className="font-semibold text-lg">Payment Method</h2>
+
+                                </div>
+                                <hr className="border-gray-300" />
+                                <div className="text-md p-5 text-black flex flex-col gap-3">
+
+                                    {paymentMethods?.map((option) => (
+                                        <label
+                                            key={option.id}
+                                            className=" p-3 flex justify- w-full items-center rounded-lg border border-transparent cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold"
+                                        >
+                                            <div className="relative z-10 inline-flex items-center justify-center gap-2 w-full">
+                                                <p className=" inset-0 w-full ">
+                                                    {option.name}
+                                                </p>
+                                            </div>
+                                            <input
+                                                type="radio"
+                                                name="paymentMethod"
+                                                value={option.name}
+                                                className="hidden"
+                                                checked={orderDetail.paymentMethod === option.name}
+                                                onChange={handlePaymentMethodChange}
+                                            />
+                                        </label>
+                                    ))}
+
+                                </div>
+                            </div>
+                            <div className="border border-gray-300 rounded-2xl">
+                                <div className="p-5 flex justify-between items-center">
+                                    <h2 className="font-semibold text-lg">Delivery Method</h2>
+
+                                </div>
+                                <hr className="border-gray-300" />
+                                <div className="text-md p-5 text-black flex flex-col gap-3">
+                                    {deliveryMethods?.map((option: DeliveryMethodTypes) => (
+                                        <label
+                                            key={option.id}
+                                            className=" p-3 flex justify- w-full items-center rounded-lg border border-transparent cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold"
+                                        >
+                                            <div className="relative z-10 inline-flex items-center justify-center gap-2 w-full">
+                                                <p className=" inset-0 w-full ">
+                                                    {option.name}
+                                                </p>
+                                            </div>
+                                            <input
+                                                type="radio"
+                                                name="deliveryMethod"
+                                                value={option.id}
+                                                className="hidden"
+                                                checked={orderDetail.deliveryMethod === option.id}
+                                                onChange={handleDeliveryMethodChange}
+                                            />
+                                        </label>
+                                    ))}
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div className="lg:col-span-2 p-10 flex flex-col gap-5 border border-gray-300 rounded-2xl">
+                            <h2 className="font-bold text-lg">Order Summary </h2>
+                            <div>
+                                <div className="flex flex-col gap-1">
                                     <div className="flex items-center justify-between">
-                                        <h2 className="text-gray-400">Coupon Discount</h2>
-                                        <h2 className="text-red-500"> {couponDetails.discountValue} EGP</h2>
+                                        <h2 className="text-gray-400">Subtotal</h2>
+                                        <h2 className="">{subTotal - shippingPrice} EGP</h2>
                                     </div>
-                                }
+                                    <div className="flex items-center justify-between">
+                                        <h2 className="text-gray-400">Delivery Fee</h2>
+                                        <h2 className=""> {shippingPrice} EGP</h2>
+                                    </div>
+                                    {couponDetails.discountValue > 0 &&
+                                        <div className="flex items-center justify-between">
+                                            <h2 className="text-gray-400">Coupon Discount</h2>
+                                            <h2 className="text-red-500"> {couponDetails.discountValue} EGP</h2>
+                                        </div>
+                                    }
+                                </div>
+                                <hr className="border-gray-300 my-2" />
+                                <div className="font-bold flex items-center justify-between">
+                                    <h2 className="">Subtotal</h2>
+                                    <h2 className="">{couponDetails.newDiscountedPrice > 0 ? couponDetails.newDiscountedPrice : subTotal} EGP</h2>
+                                </div>
                             </div>
-                            <hr className="border-gray-300 my-2" />
-                            <div className="font-bold flex items-center justify-between">
-                                <h2 className="">Subtotal</h2>
-                                <h2 className="">{couponDetails.newDiscountedPrice > 0 ? couponDetails.newDiscountedPrice : subTotal} EGP</h2>
+                            <div className="flex justify-between gap-3">
+                                <input type="text"
+                                    className="flex-1 px-5 py-2 rounded-full border border-gray-300 outline-none max-w-[70%] sm:max-w-[100%] text-sm focus:border-teal-500 duration-300 w-full"
+                                    placeholder="🔖🏷️ Enter Coupon Code" onChange={handleCouponChange} />
+                                <button className="block bg-black text-white px-5 py-2 rounded-full" onClick={validateOrderCoupon}>Apply</button>
                             </div>
+                            <button className="text-center font-semibold px-5 py-2 text-white bg-teal-500 hover:bg-teal-600 rounded-full duration-300" onClick={handleSubmit}>Confim Order</button>
                         </div>
-                        <div className="flex justify-between gap-3">
-                            <input type="text"
-                                className="flex-1 px-5 py-2 rounded-full border border-gray-300 outline-none max-w-[70%] sm:max-w-[100%] text-sm focus:border-teal-500 duration-300 w-full"
-                                placeholder="🔖🏷️ Enter Coupon Code" onChange={handleCouponChange} />
-                            <button className="block bg-black text-white px-5 py-2 rounded-full" onClick={validateOrderCoupon}>Apply</button>
-                        </div>
-                        <button className="text-center font-semibold px-5 py-2 text-white bg-teal-500 hover:bg-teal-600 rounded-full duration-300" onClick={handleSubmit}>Confim Order</button>
                     </div>
                 </div>
-            </div>
+            }
         </div>
     )
 }

@@ -123,7 +123,7 @@ export function CartMenu({ classNames }: SideMenuProps) {
                             <h2>{cart.subTotal.toFixed(2)} $</h2>
                         </div>
 
-                        <Link to="/checkout" className="w-full text-center py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl duration-300">
+                        <Link to="/checkout" className="w-full text-center py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl duration-300" onClick={handleCloseSideMenu}>
                             Checkout
                         </Link>
                     </div>
