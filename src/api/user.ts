@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import { api } from "./axiosInstance";
+import { AxiosError } from "axios";
 
 export function parseJwt() {
   const token = Cookies.get("accessToken");
@@ -35,14 +36,26 @@ export const getUserData = async () => {
   }
 };
 
-export const addAddress = async (address: string) => {
+interface addressDataTypes {
+  firstName: string;
+  lastName: string;
+  street: string;
+  city: string;
+  governorate: string;
+}
+export const addAddress = async (address: addressDataTypes) => {
+  console.log(address);
+  
   try {
-    const { data } = await api.post("/addresses", {
+    const res = await api.post("/addresses", 
       address,
-    });
+    );
     // console.log(data);
-    return data.data;
+    return res;
   } catch (error) {
-    console.error(error);
+    if (error instanceof AxiosError) {
+      console.error(error);
+      return error.response;
+    }
   }
 };

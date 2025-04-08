@@ -55,6 +55,8 @@ export default function Checkout() {
         queryKey: ["userAddresses"],
         queryFn: getShippingAddress
     });
+    console.log(addresses)
+    // -------------------------
 
     const [orderCoupon, setOrderCoupon] = useState("")
     const [couponDetails, setCouponDetails] = useState<CouponDetailsTypes>({
@@ -104,8 +106,8 @@ export default function Checkout() {
         setOrderCoupon(event.target.value)
         // console.log(orderCoupon)
     }
-    const validateOrderCoupon = async () => {
 
+    const validateOrderCoupon = async () => {
         const res = await validateCoupon({
             totalPrice: subTotal,
             code: orderCoupon,
@@ -213,17 +215,17 @@ export default function Checkout() {
                                     {
                                         addressesError && <div><h2>Error Loading Address...</h2> </div>
                                     }
-                                    {addresses && addresses.length > 0 && Array(addresses).map((option: AddressType, index: number) => (
+                                    {addresses && addresses.length > 0 && addresses.map((option: AddressType, index: number) => (
                                         <label
-                                            key={option?.id}
-                                            className=" p-3 flex justify- w-full items-center rounded-lg border border-transparent cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold "
+                                            key={index}
+
+                                            className=" p-3 flex  w-full items-center rounded-lg border border-gray-200 cursor-pointer hover:bg-slate-200 has-[:checked]:border-teal-500 has-[:checked]:text-teal-900 has-[:checked]:bg-teal-50 has-[:checked]:font-bold "
+
                                         >
                                             <div className="relative z-10 ">
                                                 <div className="flex flex-col gap-2 w-full">
-
                                                     <h2>{option.firstName} {option.lastName}</h2>
                                                     <div>
-
                                                         <h2>Address</h2>
                                                         <h2>{option.street}</h2>
                                                         <h2>{option.city}</h2>
@@ -236,8 +238,9 @@ export default function Checkout() {
                                                 name="address"
                                                 value={option.id}
                                                 className="hidden"
-                                                checked={addresses.length === 1 && index === 0}
+                                                checked={(addresses.length === 1 && index === 0) || orderDetail.address === option.id}
                                                 onChange={handleAddressChange}
+
                                             />
                                         </label>
                                     ))}

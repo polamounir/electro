@@ -250,7 +250,8 @@ export const validateCoupon = async (couponData: CouponType) => {
 export const getShippingAddress = async () => {
   try {
     const { data } = await api.get(`/addresses`);
-    // console.log(data);
+    console.log(data);
+
     return data.data;
   } catch (error) {
     if (error instanceof AxiosError) {
