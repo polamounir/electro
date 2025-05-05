@@ -1,12 +1,8 @@
-import {  Route, Routes } from "react-router"
+// import {  Route, Routes } from "react-router"
 // import { RootState } from "../app/store";
 // import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import MainData from "../components/dashboard/main/MainData";
-import MainProducts from "../components/dashboard/products/MainProducts";
-import MainCategories from "../components/dashboard/category/MainCategories";
-import MainUsers from "../components/dashboard/users/MainUsers";
-import MainOrders from "../components/dashboard/orders/MainOrders";
+
 
 export default function Dashboard() {
   // const user = useSelector((state: RootState) => state.auth.user);
@@ -97,16 +93,7 @@ export default function Dashboard() {
           </div>
 
           {/* Main Container */}
-          <div className="lg:col-span-8 xl:col-span-9 2xl:col-span-10 bg-gray-50 rounded-2xl border border-gray-300 p-2 md:p-5 lg:p-10">
-            <Routes>
-              <Route path="/" element={<MainData />} />
-              <Route path="products" element={<MainProducts />} />
-              <Route path="categories" element={<MainCategories />} />
-              <Route path="orders" element={<MainOrders />} />
-              <Route path="users" element={<MainUsers />} />
-            </Routes>
 
-          </div>
         </div>
       </div>
     </div>

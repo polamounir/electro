@@ -6,9 +6,9 @@ const token = Cookies.get("accessToken");
 
 export const fetchDailyDeals = async () => {
   try {
-    const res = await api.get(`/products?SearchQuery=dell&page=1&limit=8`);
+    const res = await api.get(`/products?SearchQuery=dell&limit=20`);
 
-    // console.log("Products:", res);
+    console.log("Products:", res);
 
     return res.data.data.items;
   } catch (error) {
