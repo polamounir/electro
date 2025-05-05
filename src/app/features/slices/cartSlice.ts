@@ -92,6 +92,7 @@ export const addToCartAsync = createAsyncThunk<
       await addToCart(productId, cartId);
       toast.success(`Product Added to Cart!`);
       dispatch(fetchCartAsync());
+
       return productId;
     } catch (error) {
       return rejectWithValue(
@@ -157,6 +158,8 @@ export const setProductQuantityAsync = createAsyncThunk<
     }
   }
 );
+
+
 
 const cartSlice = createSlice({
   name: "cart",

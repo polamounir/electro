@@ -23,7 +23,7 @@ const Checkout = lazy(() => import("../pages/Checkout"));
 const Category = lazy(() => import("../pages/Category"));
 const Product = lazy(() => import("../pages/Product"));
 const SearchResult = lazy(() => import("../pages/SearchResult"));
-
+// const LiveChat = lazy(() => import("../pages/LiveChat"));
 const Loading = () => <Loader />;
 
 // const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -58,6 +58,7 @@ const AppRoutes = () => {
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/checkout" element={<Checkout />} />
                         <Route path="/payment-success" element={<CheckoutSuccess />} />
+                        {/* <Route path="/livechat" element={<LiveChat />} /> */}
 
                         <Route path="/category/*" element={<Category />} />
                         <Route path="/product/:id" element={<Product />} />

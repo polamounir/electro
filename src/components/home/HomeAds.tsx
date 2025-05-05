@@ -16,7 +16,6 @@ export default function HomeAds() {
             <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-5 gap-3 ">
                 <div className="rounded-xl overflow-hidden bg-gray-300 col-span-1 row-span-1 lg:row-span-3 h-[200px] lg:min-h-[400px] ">
                     <div className="relative text-white h-full" >
-
                         <div className=" absolute top-0 bottom-0 right-0 h-full w-full bg-amber-500 -z-[-1]  object-cover">
                             <img src={adImg4} alt="test" loading="lazy" height={600} width={800} className="h-full w-full object-cover" />
                         </div>

@@ -2,7 +2,6 @@ import { AxiosError } from "axios";
 import { api } from "./axiosInstance";
 import Cookies from "js-cookie";
 
-
 const token = Cookies.get("accessToken");
 
 export const fetchDailyDeals = async () => {
@@ -94,7 +93,7 @@ export const addToCart = async (productId: string, cartId: string) => {
   console.log("Product:", productId);
   try {
     const res = await fetch(
-      "https://ecommerce.zerobytetools.com/api/cart/add-to-cart",
+      "https://ecommerce.markomedhat.com/api/cart/add-to-cart",
       {
         method: "POST",
         headers: {

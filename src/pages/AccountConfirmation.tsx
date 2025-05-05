@@ -37,7 +37,7 @@ export default function AccountConfirmation() {
         }
 
         try {
-            await axios.post("https://ecommerce.zerobytetools.com/api/auth/confirm-email", {
+            await axios.post("https://ecommerce.markomedhat.com/api/auth/confirm-email", {
                 userId,
                 code: parseInt(confirmationCode),
             });

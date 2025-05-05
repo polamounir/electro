@@ -208,6 +208,9 @@ export default function Checkout() {
                                     >Add</button>
                                 </div>
                                 <hr className="border-gray-300" />
+                                <div>
+                                    
+                                </div>
                                 <div className="text-md p-5 flex flex-col gap-2">
                                     {
                                         addressesLoading && <div><h2>Loading Address ...</h2> </div>
